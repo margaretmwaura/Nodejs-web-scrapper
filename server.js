@@ -56,16 +56,20 @@ let signedUrls = [];
 signedUrls.length = 52;
 
 const url = "https://www.rocketlanguages.com/french/lessons/french-alphabet";
-fetch(`${url}`)
+await fetch(`${url}`)
   .then((res) => res.text())
   .then((body) => (root = parse(body)))
-  .then(async () => extractData(root));
+  .then(async () => {
+    await extractData(root);
+  });
+console.log("items all: ", signedUrls);
 
 async function getAudio() {
   let i = 0;
-  root.querySelectorAll("audio").forEach(async (audio_element) => {
-    const audio = audio_element.getAttribute("src");
+  const audios = root.querySelectorAll("audio");
 
+  const promises = audios.map(async (audio_element) => {
+    const audio = audio_element.getAttribute("src");
     const { data } = await axios.get(audio, {
       responseType: "arraybuffer",
       headers: {
@@ -74,13 +78,17 @@ async function getAudio() {
     });
     const outputFilename = `./${audio.split("/")[6]}`;
     fs.writeFileSync(outputFilename, data);
-
     // No space within names
     await uploadFile(outputFilename, audio.split("/")[6]);
     let url = await generateSignedUrl(audio.split("/")[6]);
+    console.log(url);
+    console.log(i);
     signedUrls[i] = url;
     i++;
   });
+  await Promise.all(promises);
+
+  console.log("we here");
 }
 
 async function extractData(root) {
@@ -95,8 +103,8 @@ async function extractData(root) {
     .querySelectorAll("p")[0].text;
   console.log(description2);
 
-  await getAudio();
-  console.log(signedUrls);
+  return await getAudio();
+  // console.log(signedUrls);
 
   // FIXME: No need for this really
   // await downloadFile(audio.split("/")[6]);
