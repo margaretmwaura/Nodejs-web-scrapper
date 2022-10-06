@@ -8,6 +8,7 @@ const typeDefs = gql(
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
+const scrapVowels = require("./crons/scrapVowels");
 server.listen(5001).then(({ url }) => {
   console.log("Server ready at " + url);
 });

@@ -1,14 +1,14 @@
-import { parse } from "node-html-parser";
-import fetch from "node-fetch";
-import axios from "axios";
-import fs from "fs";
+const { parse } = require("node-html-parser");
+// const fetch = require("node-fetch");
+const axios = require("axios");
+const fs = require("fs");
 
 // We have imported this to allow for importing of a json file
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
+const { createRequire } = require("module");
+// const require = createRequire(import.meta.url);
 
-import admin from "firebase-admin";
-import { isDataView } from "util/types";
+const admin = require("firebase-admin");
+const { isDataView } = require("util/types");
 const serviceAccountKey = require("/Users/margaretmwaura/Downloads/web-scrapper-364504-firebase-adminsdk-ajo9y-3cac0a8d1e.json");
 
 admin.initializeApp({
@@ -41,30 +41,31 @@ async function generateSignedUrl(filename) {
   return url;
 }
 
-async function downloadFile(srcFilename) {
-  const options = {
-    // The path to which the file should be downloaded, e.g. "./file.txt"
-    destination: `./audio/${srcFilename}`,
-  };
+// async function downloadFile(srcFilename) {
+//   const options = {
+//     // The path to which the file should be downloaded, e.g. "./file.txt"
+//     destination: `./audio/${srcFilename}`,
+//   };
 
-  // Downloads the file
-  await bucket.file(srcFilename).download(options);
-}
+//   // Downloads the file
+//   await bucket.file(srcFilename).download(options);
+// }
 
 let root = [];
 let signedUrls = [];
 signedUrls.length = 52;
 
 const url = "https://www.rocketlanguages.com/french/lessons/french-alphabet";
-await fetch(`${url}`)
-  .then((res) => res.text())
+axios
+  .get(`${url}`)
+  .then((res) => res.data)
   .then((body) => (root = parse(body)))
   .then(async () => {
     await extractData(root);
   });
 console.log("items all: ", signedUrls);
 
-async function getAudio() {
+async function getAudio(root) {
   let i = 0;
   const audios = root.querySelectorAll("audio");
 
@@ -92,7 +93,7 @@ async function getAudio() {
 }
 
 async function extractData(root) {
-  await getAudio();
+  await getAudio(root);
   const description = root
     .querySelectorAll(".ws-french")[0]
     .querySelectorAll("div")[0]
@@ -112,3 +113,5 @@ async function extractData(root) {
   // console.log(data);
   // console.log(audio.split("/")[6]);
 }
+
+module.exports = { extractData };
