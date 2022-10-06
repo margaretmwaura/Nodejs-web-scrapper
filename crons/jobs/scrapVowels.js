@@ -8,7 +8,6 @@ const { createRequire } = require("module");
 // const require = createRequire(import.meta.url);
 
 const admin = require("firebase-admin");
-const { isDataView } = require("util/types");
 const serviceAccountKey = require("/Users/margaretmwaura/Downloads/web-scrapper-364504-firebase-adminsdk-ajo9y-3cac0a8d1e.json");
 
 admin.initializeApp({
@@ -51,7 +50,6 @@ async function generateSignedUrl(filename) {
 //   await bucket.file(srcFilename).download(options);
 // }
 
-let root = [];
 let signedUrls = [];
 signedUrls.length = 52;
 
