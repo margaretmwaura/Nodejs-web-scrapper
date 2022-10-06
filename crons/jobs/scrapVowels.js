@@ -1,5 +1,5 @@
 const { parse } = require("node-html-parser");
-// const fetch = require("node-fetch");
+const fetch = require("node-fetch");
 const axios = require("axios");
 const fs = require("fs");
 
@@ -10,12 +10,21 @@ const { createRequire } = require("module");
 const admin = require("firebase-admin");
 const serviceAccountKey = require("/Users/margaretmwaura/Downloads/web-scrapper-364504-firebase-adminsdk-ajo9y-3cac0a8d1e.json");
 
+let signedUrls = [];
+signedUrls.length = 26;
+
+let allLetters = [];
+allLetters.length = 26;
+
+let allDescriptions = [];
+allDescriptions.length = 26;
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccountKey),
   storageBucket: "web-scrapper-364504.appspot.com",
 });
 
-var bucket = admin.storage().bucket();
+let bucket = admin.storage().bucket();
 
 //function to upload file
 async function uploadFile(filepath, filename) {
@@ -40,32 +49,20 @@ async function generateSignedUrl(filename) {
   return url;
 }
 
-// async function downloadFile(srcFilename) {
-//   const options = {
-//     // The path to which the file should be downloaded, e.g. "./file.txt"
-//     destination: `./audio/${srcFilename}`,
-//   };
-
-//   // Downloads the file
-//   await bucket.file(srcFilename).download(options);
-// }
-
-let signedUrls = [];
-signedUrls.length = 52;
-
-const url = "https://www.rocketlanguages.com/french/lessons/french-alphabet";
-axios
-  .get(`${url}`)
-  .then((res) => res.data)
-  .then((body) => (root = parse(body)))
-  .then(async () => {
-    await extractData(root);
-  });
-console.log("items all: ", signedUrls);
+async function getAllData() {
+  const url = "https://www.rocketlanguages.com/french/lessons/french-alphabet";
+  await fetch(`${url}`)
+    .then((res) => res.text())
+    .then((body) => (root = parse(body)))
+    .then(async () => {
+      await extractData(root);
+    });
+  console.log("items all: ");
+}
 
 async function getAudio(root) {
   let i = 0;
-  const audios = root.querySelectorAll("audio");
+  const audios = root.querySelectorAll("audio").slice(0, 27);
 
   const promises = audios.map(async (audio_element) => {
     const audio = audio_element.getAttribute("src");
@@ -80,30 +77,51 @@ async function getAudio(root) {
     // No space within names
     await uploadFile(outputFilename, audio.split("/")[6]);
     let url = await generateSignedUrl(audio.split("/")[6]);
-    console.log(url);
     console.log(i);
     signedUrls[i] = url;
     i++;
   });
   await Promise.all(promises);
+}
 
-  console.log("we here");
+async function getAllLetters(root) {
+  let i = 0;
+  const letters = root.querySelectorAll(".output").slice(0, 26);
+
+  console.log(letters.length);
+
+  const promises = letters.map(async (letter) => {
+    const element = letter
+      .querySelectorAll("div")[0]
+      .querySelectorAll("p")[0].text;
+    allLetters[i] = element;
+    i++;
+  });
+  await Promise.all(promises);
+}
+
+async function getAllDescription(root) {
+  let i = 0;
+  const descriptions = root.querySelectorAll(".ws-english").slice(0, 26);
+
+  const promises = descriptions.map(async (description) => {
+    const element = description
+      .querySelectorAll("div")[0]
+      .querySelectorAll("p")[0].text;
+    allDescriptions[i] = element;
+    i++;
+  });
+  await Promise.all(promises);
 }
 
 async function extractData(root) {
   await getAudio(root);
-  const description = root
-    .querySelectorAll(".ws-french")[0]
-    .querySelectorAll("div")[0]
-    .querySelectorAll("p")[0].text;
-  console.log(description);
-  const description2 = root
-    .querySelectorAll(".ws-english")[0]
-    .querySelectorAll("div")[0]
-    .querySelectorAll("p")[0].text;
-  console.log(description2);
+  await getAllLetters(root);
+  await getAllDescription(root);
 
-  // console.log(signedUrls);
+  console.log(allDescriptions);
+  console.log(allLetters);
+  console.log(signedUrls);
 
   // FIXME: No need for this really
   // await downloadFile(audio.split("/")[6]);
@@ -112,4 +130,6 @@ async function extractData(root) {
   // console.log(audio.split("/")[6]);
 }
 
-module.exports = { extractData };
+getAllData();
+
+module.exports = { getAllData };
