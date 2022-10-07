@@ -2,6 +2,7 @@ const { parse } = require("node-html-parser");
 const fetch = require("node-fetch");
 const axios = require("axios");
 const fs = require("fs");
+const { Vowels } = require("../../models");
 
 // We have imported this to allow for importing of a json file
 const { createRequire } = require("module");
@@ -64,6 +65,13 @@ async function getAudio(root) {
   let i = 0;
   const audios = root.querySelectorAll("audio").slice(0, 27);
 
+  const dir = "./audio";
+
+  // check if directory exists
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, true);
+  }
+
   const promises = audios.map(async (audio_element) => {
     const audio = audio_element.getAttribute("src");
     const { data } = await axios.get(audio, {
@@ -72,7 +80,7 @@ async function getAudio(root) {
         "Content-Type": "audio/wav",
       },
     });
-    const outputFilename = `./${audio.split("/")[6]}`;
+    const outputFilename = `${dir}/${audio.split("/")[6]}`;
     fs.writeFileSync(outputFilename, data);
     // No space within names
     await uploadFile(outputFilename, audio.split("/")[6]);
@@ -82,6 +90,7 @@ async function getAudio(root) {
     i++;
   });
   await Promise.all(promises);
+  fs.rmdirSync(dir, { recursive: true });
 }
 
 async function getAllLetters(root) {
@@ -124,10 +133,19 @@ async function extractData(root) {
   console.log(signedUrls);
 
   // FIXME: No need for this really
-  // await downloadFile(audio.split("/")[6]);
 
-  // console.log(data);
-  // console.log(audio.split("/")[6]);
+  let i = 0;
+  for (i = 0; i < allDescriptions.length; i++) {
+    let letter = allLetters[i];
+    let description = allDescriptions[i];
+    let url = signedUrls[i];
+
+    Vowels.create({
+      name: letter,
+      description: description,
+      filename: url,
+    });
+  }
 }
 
 getAllData();
