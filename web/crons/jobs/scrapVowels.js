@@ -58,7 +58,7 @@ async function getAllData() {
     .then(async () => {
       await extractData(root);
     });
-  console.log("items all: ");
+  // console.log("items all: ");
 }
 
 async function getAudio(root) {
@@ -97,7 +97,7 @@ async function getAllLetters(root) {
   let i = 0;
   const letters = root.querySelectorAll(".output").slice(0, 26);
 
-  console.log(letters.length);
+  // console.log(letters.length);
 
   const promises = letters.map(async (letter) => {
     const element = letter
@@ -128,9 +128,9 @@ async function extractData(root) {
   await getAllLetters(root);
   await getAllDescription(root);
 
-  console.log(allDescriptions);
-  console.log(allLetters);
-  console.log(signedUrls);
+  // console.log(allDescriptions);
+  // console.log(allLetters);
+  // console.log(signedUrls);
 
   // FIXME: No need for this really
 

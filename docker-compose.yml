@@ -1,0 +1,27 @@
+version: "3.8"
+networks:
+  app-tier:
+    driver: bridge
+services:
+  db:
+    build: ./db
+    environment:
+      - MYSQL_ROOT_PASSWORD=Aswift07
+      - MYSQL_DATABASE=FRENCHDB
+    restart: always
+    networks:
+      - app-tier
+  web:
+    build: ./web
+    environment:
+      - MYSQL_DATABASE=FRENCHDB
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=Aswift07
+      - MYSQL_HOST=db
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    restart: on-failure
+    networks:
+      - app-tier
