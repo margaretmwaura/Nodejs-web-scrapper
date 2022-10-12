@@ -9,7 +9,7 @@ const { createRequire } = require("module");
 // const require = createRequire(import.meta.url);
 
 const admin = require("firebase-admin");
-const serviceAccountKey = require("/Users/margaretmwaura/Downloads/web-scrapper-364504-firebase-adminsdk-ajo9y-3cac0a8d1e.json");
+const serviceAccountKey = require("../../config/web-scrapper-364504-firebase-adminsdk-ajo9y-3cac0a8d1e.json");
 
 let signedUrls = [];
 signedUrls.length = 26;
