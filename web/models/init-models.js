@@ -3,8 +3,6 @@ var _Vowels = require("./Vowels");
 
 function initModels(sequelize) {
   var Vowels = _Vowels(sequelize, DataTypes);
-
-
   return {
     Vowels,
   };

@@ -2,7 +2,7 @@ const { parse } = require("node-html-parser");
 const fetch = require("node-fetch");
 const axios = require("axios");
 const fs = require("fs");
-const { Vowels } = require("../../models");
+const { vowels } = require("../../models");
 
 // We have imported this to allow for importing of a json file
 const { createRequire } = require("module");
@@ -140,11 +140,15 @@ async function extractData(root) {
     let description = allDescriptions[i];
     let url = signedUrls[i];
 
-    Vowels.create({
-      name: letter,
-      description: description,
-      filename: url,
-    });
+    try {
+      vowels.create({
+        name: letter,
+        description: description,
+        filename: url,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 
