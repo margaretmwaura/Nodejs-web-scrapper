@@ -128,12 +128,6 @@ async function extractData(root) {
   await getAllLetters(root);
   await getAllDescription(root);
 
-  // console.log(allDescriptions);
-  // console.log(allLetters);
-  // console.log(signedUrls);
-
-  // FIXME: No need for this really
-
   let i = 0;
   for (i = 0; i < allDescriptions.length; i++) {
     let letter = allLetters[i];
