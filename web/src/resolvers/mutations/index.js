@@ -1,3 +1,3 @@
 const { createVowel } = require("./vowelMutation");
-
-module.exports.Mutation = { createVowel };
+const { registerUser, login } = require("./userMutation");
+module.exports.Mutation = { createVowel, registerUser, login };

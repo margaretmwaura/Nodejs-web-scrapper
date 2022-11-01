@@ -1,5 +1,10 @@
 const Sequelize = require("sequelize");
 module.exports = function (sequelize, DataTypes) {
+  // FIXME:
+  // The name is in upperCase and singular for the model
+  // The file name should be in small letters and singular
+  // The table name should be plural
+
   return sequelize.define(
     "vowels",
     {
