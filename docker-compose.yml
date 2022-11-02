@@ -23,5 +23,10 @@ services:
     depends_on:
       - db
     restart: on-failure
+
+    # Trying to resolve the node modules issue
+    # volumes:
+    #   - /usr/src/app
+    #   - /usr/src/app/node_modules
     networks:
       - app-tier

@@ -18,8 +18,8 @@ const server = new ApolloServer({
   playground: true,
 });
 
-const scrapVowels = require("./crons");
+// const scrapVowels = require("./crons");
 
-server.listen(5001).then(({ url }) => {
+server.listen(5000).then(({ url }) => {
   console.log("Server ready at " + url);
 });
