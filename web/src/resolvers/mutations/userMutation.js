@@ -8,6 +8,8 @@ module.exports.registerUser = async (
   { firstName, lastName, email, password }
 ) => {
   try {
+    console.log("Token");
+    console.log(process.env.JWT_SECRET);
     const userCheck = await User.findOne({
       where: {
         [Op.or]: [{ email: email }],
@@ -15,7 +17,6 @@ module.exports.registerUser = async (
     });
     if (userCheck) {
       console.log(userCheck);
-      console.log(process.env.JWT_SECRET);
       // throw new Error("Email or Employee id already exists");
     }
     const user = await User.create({

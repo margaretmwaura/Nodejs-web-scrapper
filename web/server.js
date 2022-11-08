@@ -20,5 +20,6 @@ const server = new ApolloServer({
 // const scrapVowels = require("./crons");
 
 server.listen(5000).then(({ url }) => {
+  console.log(process.env.JWT_SECRET);
   console.log("Server ready at " + url);
 });
