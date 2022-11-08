@@ -1,5 +1,7 @@
 const { sequelize } = require("sequelize");
 const { User } = require("../../../models");
+const { Op } = require("sequelize");
+const jsonwebtoken = require("jsonwebtoken");
 
 module.exports.registerUser = async (
   root,
@@ -12,7 +14,9 @@ module.exports.registerUser = async (
       },
     });
     if (userCheck) {
-      throw new Error("Email or Employee id already exists");
+      console.log(userCheck);
+      console.log(process.env.JWT_SECRET);
+      // throw new Error("Email or Employee id already exists");
     }
     const user = await User.create({
       firstName,
@@ -22,7 +26,7 @@ module.exports.registerUser = async (
     });
 
     const token = jsonwebtoken.sign(
-      { employeeId: user.employeeId, email: user.email },
+      { userId: user.id, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: "1y" }
     );
@@ -33,11 +37,11 @@ module.exports.registerUser = async (
       email: user.email,
     };
 
-    return {
-      token,
-      // user: createdUser,
-      // message: "Registration succesfull",
-    };
+    // return {
+    return token;
+    // user: createdUser,
+    // message: "Registration succesfull",
+    // };
   } catch (error) {
     throw new Error(error.message);
   }

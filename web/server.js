@@ -4,16 +4,15 @@ const fs = require("fs");
 const { typeDefs } = require("./src/typeDefs");
 const resolvers = require("./src/resolvers");
 
+require("dotenv").config();
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
 
   // FIXME:
   // Have a util for the checking if a user is authorized
-  context: ({ req }) => {
-    const token = req.get("Authorization") || "";
-    return { user: getUser(token.replace("Bearer", "")) };
-  },
+  context: ({ req }) => ({ ...req }),
   introspection: true,
   playground: true,
 });
