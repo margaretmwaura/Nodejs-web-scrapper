@@ -15,6 +15,11 @@ module.exports = gql`
     password: String!
   }
 
+  input LoginUser {
+    email: EmailAddress!
+    password: String!
+  }
+
   type RegisterSuccessful implements PasswordToken {
     token: String
     user: User!

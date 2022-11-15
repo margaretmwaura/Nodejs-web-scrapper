@@ -28,8 +28,8 @@ const schema = applyMiddleware(
   makeExecutableSchema({
     typeDefs,
     resolvers,
-  }),
-  permisions
+  })
+  // permisions
 );
 
 const server = new ApolloServer({
@@ -37,7 +37,7 @@ const server = new ApolloServer({
   resolvers,
   schema,
   // FIXME:
-  // Have a util for the checking if a user is authorized
+  // This will be handled by the permission
   context: ({ req }) => ({ ...req }),
   introspection: true,
   playground: true,

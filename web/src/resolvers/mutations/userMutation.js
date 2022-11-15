@@ -45,7 +45,8 @@ module.exports.registerUser = async (_, { input }, context) => {
     throw new Error(error.message);
   }
 };
-module.exports.login = async (_, { email, password }, context) => {
+module.exports.login = async (_, { input }, context) => {
+  const { email, password } = input;
   try {
     const user = await User.findOne({ where: { email } });
 
@@ -53,21 +54,18 @@ module.exports.login = async (_, { email, password }, context) => {
       throw new Error("No user with that email");
     }
     const isValid = await User.validPassword(password, user.password);
+
     if (!isValid) {
-      throw new Error("Incorrect password");
+      throw new Error("Kindly check your credentials and retry");
     }
 
-    // return jwt
     const token = jsonwebtoken.sign(
-      { employeeId: user.employeeId, email: user.email },
+      { userId: user.id, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
-    return {
-      token,
-      // user,
-    };
+    return token;
   } catch (error) {
     throw new Error(error.message);
   }
