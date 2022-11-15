@@ -7,6 +7,8 @@ const Mutation = require("./mutation");
 const { types } = require("./types");
 
 const genericTypeDefs = gql`
+  scalar EmailAddress
+
   type CreateError {
     message: String!
   }

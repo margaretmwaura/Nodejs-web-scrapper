@@ -5,13 +5,13 @@ module.exports = gql`
     UserID: ID!
     firstName: String
     lastName: String
-    email: String
+    email: EmailAddress
   }
 
   input RegisterUser {
     firstName: String!
     lastName: String!
-    email: String!
+    email: EmailAddress!
     password: String!
   }
 
