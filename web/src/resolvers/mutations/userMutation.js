@@ -3,21 +3,19 @@ const { User } = require("../../../models");
 const { Op } = require("sequelize");
 const jsonwebtoken = require("jsonwebtoken");
 
-module.exports.registerUser = async (
-  root,
-  { firstName, lastName, email, password }
-) => {
+module.exports.registerUser = async (_, { input }, context) => {
+  const { firstName, lastName, email, password } = input;
   try {
-    console.log("Token");
-    console.log(process.env.JWT_SECRET);
     const userCheck = await User.findOne({
       where: {
         [Op.or]: [{ email: email }],
       },
     });
     if (userCheck) {
-      console.log(userCheck);
-      // throw new Error("Email or Employee id already exists");
+      return {
+        __typename: "CreateError",
+        message: "A user already exists with that email",
+      };
     }
     const user = await User.create({
       firstName,
@@ -38,16 +36,16 @@ module.exports.registerUser = async (
       email: user.email,
     };
 
-    // return {
-    return token;
-    // user: createdUser,
-    // message: "Registration succesfull",
-    // };
+    return {
+      __typename: "RegisterSuccessful",
+      user: createdUser,
+      token: token,
+    };
   } catch (error) {
     throw new Error(error.message);
   }
 };
-module.exports.login = async (_, { email, password }) => {
+module.exports.login = async (_, { email, password }, context) => {
   try {
     const user = await User.findOne({ where: { email } });
 
