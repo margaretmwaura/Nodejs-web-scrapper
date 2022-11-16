@@ -25,11 +25,17 @@ const parseLiteral = (ast) => {
 
   return validate(ast.value);
 };
-
-module.exports.GraphQLEmailAdressConfig = {
+const GraphQLEmailAdressConfig = {
   name: "EmailAddress",
   description: "A valid Email Address",
   serialize: validate,
   parseValue: (value) => value,
   parseLiteral,
 };
+
+module.exports = GraphQLEmailAdressConfig;
+
+// If we have the export as
+// module.exports.GraphQLEmailAdressConfig = {}
+// Then when going to import we will do
+// const {GraphQLEmailAdressConfig} = require('path')
