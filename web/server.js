@@ -1,3 +1,5 @@
+require("dotenv").config({ path: "../.env" });
+
 const { ApolloServer } = require("apollo-server");
 const gql = require("graphql-tag");
 const fs = require("fs");
@@ -6,44 +8,32 @@ const resolvers = require("./src/resolvers");
 const { shield, rule, allow, deny, and } = require("graphql-shield");
 const { applyMiddleware } = require("graphql-middleware");
 const { makeExecutableSchema } = require("graphql-tools");
+const middleware = require("./src/middleware");
+const executableSchema = makeExecutableSchema({ typeDefs, resolvers });
+const schemaWithMiddleware = applyMiddleware(executableSchema, ...middleware);
+const admin = require("firebase-admin");
+const serviceAccount = require("./config/fbServiceAccountKey.json");
 
-require("dotenv").config();
+global.admin = admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
 
-const isAuthenticated = rule({ cache: "contextual" })(
-  async (parent, args, context, _info) => {
-    const result = !!context.user;
-    console.info(`isAuthenticated:${result}`);
-    return result;
-  }
-);
-
-// FIXME: This works , learn how I can make this a global file
-const permisions = shield({
-  Mutation: {
-    // registerUser: isAuthenticated,
-  },
+  // FIXME: This should be moved to a config or .env
+  databaseURL: "https://web-scrapper-364504-default-rtdb.firebaseio.com",
+  storageBucket: "web-scrapper-364504.appspot.com",
 });
 
-const schema = applyMiddleware(
-  makeExecutableSchema({
-    typeDefs,
-    resolvers,
-  })
-  // permisions
-);
-
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  schema,
-  // FIXME:
-  // This will be handled by the permission
-  context: ({ req }) => ({ ...req }),
+  // typeDefs,
+  // resolvers,
+  schema: schemaWithMiddleware,
+  context: async ({ req, res }) => ({ req, res }),
   introspection: true,
   playground: true,
 });
 
-// const scrapVowels = require("./crons");
+// console.log(process.env.JWT_SECRET);
+
+const scrapVowels = require("./crons");
 
 server.listen(5000).then(({ url }) => {
   console.log(process.env.JWT_SECRET);

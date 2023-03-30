@@ -1,10 +1,10 @@
 const { sequelize } = require("sequelize");
-const { Vowels } = require("../../../models");
+const { Vowel } = require("../../../models");
 
 module.exports.createVowel = async (_, { name, description, filename }) => {
   try {
-    (await Vowels) &&
-      Vowels.create({
+    (await Vowel) &&
+      Vowel.create({
         name: name,
         description: description,
         filename: filename,

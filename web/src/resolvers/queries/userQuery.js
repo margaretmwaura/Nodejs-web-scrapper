@@ -1,5 +1,5 @@
 const { sequelize } = require("sequelize");
-const { Vowels } = require("../../../models");
+const { Vowel } = require("../../../models");
 const { Op } = require("sequelize");
 
 module.exports.getUserList = async (root, args, { user }) => {

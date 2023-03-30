@@ -5,5 +5,6 @@ module.exports = gql`
     createVowel(name: String, description: String, filename: String): String
     registerUser(input: RegisterUser!): userRegister
     login(input: LoginUser!): String
+    checkAuth(authorized: String): String
   }
 `;

@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 const jsonwebtoken = require("jsonwebtoken");
 
 module.exports.registerUser = async (_, { input }, context) => {
+  console.log("we have been called ayyeee" + input);
   const { firstName, lastName, email, password } = input;
   try {
     const userCheck = await User.findOne({

@@ -2,14 +2,14 @@ const { parse } = require("node-html-parser");
 const fetch = require("node-fetch");
 const axios = require("axios");
 const fs = require("fs");
-const { vowels } = require("../../models");
+const { Vowel } = require("../../models");
 
 // We have imported this to allow for importing of a json file
 const { createRequire } = require("module");
 // const require = createRequire(import.meta.url);
 
-const admin = require("firebase-admin");
-const serviceAccountKey = require("../../config/web-scrapper-364504-firebase-adminsdk-ajo9y-3cac0a8d1e.json");
+// const admin = require("firebase-admin");
+// const serviceAccountKey = require("../../config/fbServiceAccountKey.json");
 
 let signedUrls = [];
 signedUrls.length = 26;
@@ -20,10 +20,10 @@ allLetters.length = 26;
 let allDescriptions = [];
 allDescriptions.length = 26;
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccountKey),
-  storageBucket: "web-scrapper-364504.appspot.com",
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccountKey),
+//   storageBucket: "web-scrapper-364504.appspot.com",
+// });
 
 let bucket = admin.storage().bucket();
 
@@ -134,8 +134,11 @@ async function extractData(root) {
     let description = allDescriptions[i];
     let url = signedUrls[i];
 
+    console.log(letter);
+    console.log(description);
+    console.log(url);
     try {
-      vowels.create({
+      Vowel.create({
         name: letter,
         description: description,
         filename: url,
