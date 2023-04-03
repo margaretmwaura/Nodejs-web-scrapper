@@ -6,6 +6,7 @@ const { Vowel } = require("../../models");
 
 // We have imported this to allow for importing of a json file
 const { createRequire } = require("module");
+const { compileFunction } = require("vm");
 // const require = createRequire(import.meta.url);
 
 // const admin = require("firebase-admin");
@@ -63,16 +64,21 @@ async function getAllData() {
 
 async function getAudio(root) {
   let i = 0;
-  const audios = root.querySelectorAll("audio").slice(0, 27);
+  const audios = root.querySelectorAll("audio").slice(0, 26);
 
   const dir = "./audio";
 
   // check if directory exists
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, true);
+    console.log("created file nyadhiwa");
+  } else {
+    console.log("file already existed nyadhiwa");
   }
 
-  const promises = audios.map(async (audio_element) => {
+  // const promises = audios.map(async (audio_element) => {
+  for (audio_element of audios) {
+    // console.log(audio_element);
     const audio = audio_element.getAttribute("src");
     const { data } = await axios.get(audio, {
       responseType: "arraybuffer",
@@ -85,11 +91,12 @@ async function getAudio(root) {
     // No space within names
     await uploadFile(outputFilename, audio.split("/")[6]);
     let url = await generateSignedUrl(audio.split("/")[6]);
-    console.log(i);
     signedUrls[i] = url;
     i++;
-  });
-  await Promise.all(promises);
+  }
+
+  // The promises can only be used if we are using a map
+  // await Promise.all(promises);
   fs.rmdirSync(dir, { recursive: true });
 }
 
@@ -133,6 +140,11 @@ async function extractData(root) {
     let letter = allLetters[i];
     let description = allDescriptions[i];
     let url = signedUrls[i];
+
+    // console.log("The letter is " + letter);
+    // console.log("The url is ......");
+    // console.log(url);
+    // console.log(typeof url);
 
     console.log(letter);
     console.log(description);
