@@ -1,7 +1,7 @@
 const schedule = require("node-schedule");
 
 const { getAllData } = require("./jobs/scrapVowels");
-schedule.scheduleJob("0 5 * * *", () => {
+schedule.scheduleJob("20 6 * * *", () => {
   getAllData();
 });
 

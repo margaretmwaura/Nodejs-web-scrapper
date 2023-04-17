@@ -135,16 +135,17 @@ async function extractData(root) {
   await getAllLetters(root);
   await getAllDescription(root);
 
+  // if (checkIfDataHasBeenScrappedSuccessfully()) {
+  //   await truncateTheDB();
+  // } else {
+  //   return;
+  // }
+
   let i = 0;
   for (i = 0; i < allDescriptions.length; i++) {
     let letter = allLetters[i];
     let description = allDescriptions[i];
     let url = signedUrls[i];
-
-    // console.log("The letter is " + letter);
-    // console.log("The url is ......");
-    // console.log(url);
-    // console.log(typeof url);
 
     console.log(letter);
     console.log(description);
@@ -158,6 +159,33 @@ async function extractData(root) {
     } catch (err) {
       console.log(err);
     }
+  }
+}
+
+// FIXME: We should be calling the mutation here
+
+async function truncateTheDB() {
+  await Vowel.destroy({
+    where: {},
+    truncate: true,
+  })
+    .then(function () {
+      console.log("Data deleted"); // Success
+    })
+    .catch(function (error) {
+      console.log(error); // Failure
+    });
+}
+
+async function checkIfDataHasBeenScrappedSuccessfully() {
+  if (
+    allDescriptions.length > 0 &&
+    allLetters.length > 0 &&
+    signedUrls.length > 0
+  ) {
+    return true;
+  } else {
+    return false;
   }
 }
 

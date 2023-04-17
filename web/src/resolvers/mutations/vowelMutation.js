@@ -14,3 +14,18 @@ module.exports.createVowel = async (_, { name, description, filename }) => {
     console.log(error);
   }
 };
+
+module.exports.deleteVowels = async (_, {}) => {
+  Vowel.destroy({
+    where: {},
+    truncate: true,
+  })
+    .then(function () {
+      console.log("Data deleted"); // Success
+      return "All Vowels have been deleted";
+    })
+    .catch(function (error) {
+      console.log(error); // Failure
+      return "Deleting of vowels was not successful";
+    });
+};
