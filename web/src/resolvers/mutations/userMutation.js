@@ -4,7 +4,8 @@ const { Op } = require("sequelize");
 const jsonwebtoken = require("jsonwebtoken");
 
 module.exports.registerUser = async (_, { input }, context) => {
-  console.log("we have been called ayyeee" + input);
+  console.log("we have been called ayyeee");
+  console.log(input);
   const { firstName, lastName, email, password } = input;
   try {
     const userCheck = await User.findOne({
@@ -25,11 +26,6 @@ module.exports.registerUser = async (_, { input }, context) => {
       password,
     });
 
-    const token = jsonwebtoken.sign(
-      { userId: user.id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "1y" }
-    );
     let createdUser = {
       employeeId: user.employeeId,
       firstName: user.firstName,
@@ -40,7 +36,6 @@ module.exports.registerUser = async (_, { input }, context) => {
     return {
       __typename: "RegisterSuccessful",
       user: createdUser,
-      token: token,
     };
   } catch (error) {
     throw new Error(error.message);

@@ -20,14 +20,13 @@ module.exports = gql`
     password: String!
   }
 
-  type RegisterSuccessful implements PasswordToken {
-    token: String
+  type RegisterSuccessful {
     user: User!
   }
 
-  interface PasswordToken {
-    token: String
-  }
+  // interface PasswordToken {
+  //   token: String
+  // }
 
   union userRegister = CreateError | RegisterSuccessful
 `;
