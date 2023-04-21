@@ -18,10 +18,19 @@ services:
       - MYSQL_USER=root
       - MYSQL_PASSWORD=Aswift07
       - MYSQL_HOST=db
+      - JWT_SECRET=${JWT_SECRET}
     ports:
       - "5000:5000"
     depends_on:
       - db
     restart: on-failure
+
+    # Trying to resolve the node modules issue
+    # volumes:
+    #   - /usr/src/app
+    #   - /usr/src/app/node_modules
     networks:
       - app-tier
+
+
+# docker-compose build --no-cache && docker-compose up     

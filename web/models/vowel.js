@@ -1,7 +1,12 @@
 const Sequelize = require("sequelize");
 module.exports = function (sequelize, DataTypes) {
+  // RULES:
+  // The name is in upperCase and singular for the model
+  // The file name should be in small letters and singular
+  // The table name should be plural
+
   return sequelize.define(
-    "vowels",
+    "Vowel",
     {
       id: {
         autoIncrement: true,
@@ -18,7 +23,7 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: true,
       },
       filename: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING(2000),
         allowNull: true,
       },
     },

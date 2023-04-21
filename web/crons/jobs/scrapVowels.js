@@ -2,14 +2,15 @@ const { parse } = require("node-html-parser");
 const fetch = require("node-fetch");
 const axios = require("axios");
 const fs = require("fs");
-const { vowels } = require("../../models");
+const { Vowel } = require("../../models");
 
 // We have imported this to allow for importing of a json file
 const { createRequire } = require("module");
+const { compileFunction } = require("vm");
 // const require = createRequire(import.meta.url);
 
-const admin = require("firebase-admin");
-const serviceAccountKey = require("../../config/web-scrapper-364504-firebase-adminsdk-ajo9y-3cac0a8d1e.json");
+// const admin = require("firebase-admin");
+// const serviceAccountKey = require("../../config/fbServiceAccountKey.json");
 
 let signedUrls = [];
 signedUrls.length = 26;
@@ -20,10 +21,10 @@ allLetters.length = 26;
 let allDescriptions = [];
 allDescriptions.length = 26;
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccountKey),
-  storageBucket: "web-scrapper-364504.appspot.com",
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccountKey),
+//   storageBucket: "web-scrapper-364504.appspot.com",
+// });
 
 let bucket = admin.storage().bucket();
 
@@ -63,16 +64,21 @@ async function getAllData() {
 
 async function getAudio(root) {
   let i = 0;
-  const audios = root.querySelectorAll("audio").slice(0, 27);
+  const audios = root.querySelectorAll("audio").slice(0, 26);
 
   const dir = "./audio";
 
   // check if directory exists
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, true);
+    console.log("created file nyadhiwa");
+  } else {
+    console.log("file already existed nyadhiwa");
   }
 
-  const promises = audios.map(async (audio_element) => {
+  // const promises = audios.map(async (audio_element) => {
+  for (audio_element of audios) {
+    // console.log(audio_element);
     const audio = audio_element.getAttribute("src");
     const { data } = await axios.get(audio, {
       responseType: "arraybuffer",
@@ -85,11 +91,12 @@ async function getAudio(root) {
     // No space within names
     await uploadFile(outputFilename, audio.split("/")[6]);
     let url = await generateSignedUrl(audio.split("/")[6]);
-    console.log(i);
     signedUrls[i] = url;
     i++;
-  });
-  await Promise.all(promises);
+  }
+
+  // The promises can only be used if we are using a map
+  // await Promise.all(promises);
   fs.rmdirSync(dir, { recursive: true });
 }
 
@@ -128,14 +135,23 @@ async function extractData(root) {
   await getAllLetters(root);
   await getAllDescription(root);
 
+  // if (checkIfDataHasBeenScrappedSuccessfully()) {
+  //   await truncateTheDB();
+  // } else {
+  //   return;
+  // }
+
   let i = 0;
   for (i = 0; i < allDescriptions.length; i++) {
     let letter = allLetters[i];
     let description = allDescriptions[i];
     let url = signedUrls[i];
 
+    console.log(letter);
+    console.log(description);
+    console.log(url);
     try {
-      vowels.create({
+      Vowel.create({
         name: letter,
         description: description,
         filename: url,
@@ -143,6 +159,33 @@ async function extractData(root) {
     } catch (err) {
       console.log(err);
     }
+  }
+}
+
+// FIXME: We should be calling the mutation here
+
+async function truncateTheDB() {
+  await Vowel.destroy({
+    where: {},
+    truncate: true,
+  })
+    .then(function () {
+      console.log("Data deleted"); // Success
+    })
+    .catch(function (error) {
+      console.log(error); // Failure
+    });
+}
+
+async function checkIfDataHasBeenScrappedSuccessfully() {
+  if (
+    allDescriptions.length > 0 &&
+    allLetters.length > 0 &&
+    signedUrls.length > 0
+  ) {
+    return true;
+  } else {
+    return false;
   }
 }
 

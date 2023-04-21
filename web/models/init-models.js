@@ -1,10 +1,13 @@
 var DataTypes = require("sequelize").DataTypes;
-var _Vowels = require("./Vowels");
+var _Vowel = require("./vowel");
+var _User = require("./user");
 
 function initModels(sequelize) {
-  var Vowels = _Vowels(sequelize, DataTypes);
+  var Vowel = _Vowel(sequelize, DataTypes);
+  var User = _User(sequelize, DataTypes);
   return {
-    Vowels,
+    Vowel,
+    User,
   };
 }
 module.exports = initModels;
