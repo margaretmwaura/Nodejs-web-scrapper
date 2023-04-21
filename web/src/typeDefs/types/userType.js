@@ -24,9 +24,9 @@ module.exports = gql`
     user: User!
   }
 
-  // interface PasswordToken {
-  //   token: String
-  // }
+  interface PasswordToken {
+    token: String
+  }
 
   union userRegister = CreateError | RegisterSuccessful
 `;

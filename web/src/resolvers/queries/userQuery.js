@@ -1,7 +1,9 @@
 const { sequelize } = require("sequelize");
 const { Vowel } = require("../../../models");
+const { User } = require("../../../models");
 const { Op } = require("sequelize");
 
+// TODO: Make an error type that can be returned when there is no data
 module.exports.getUserList = async (root, args, { user }) => {
   try {
     if (!user) throw new Error("You are not authenticated!");
@@ -32,6 +34,20 @@ module.exports.getUserList = async (root, args, { user }) => {
       query.order = [[sort, "ASC"]];
     }
     return await User.findAll(query);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+module.exports.getUser = async (_, { email }, context) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        [Op.or]: [{ email: email }],
+      },
+    });
+    console.log(user);
+    return user;
   } catch (error) {
     throw new Error(error.message);
   }
