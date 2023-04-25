@@ -34,9 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     }
   );
-  // User.associate = function (models) {
-  //   // User.hasOne(models.Company, { foreignKey: "employeeId" });
-  // };
+
   User.validPassword = async (password, hash) => {
     return await bcrypt.compareSync(password, hash);
   };

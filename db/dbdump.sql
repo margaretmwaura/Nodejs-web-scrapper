@@ -26,26 +26,17 @@ updatedAt timestamp NULL DEFAULT NULL,
 PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
 
 
-CREATE TABLE todoListStatuses ( id int(11) unsigned NOT NULL AUTO_INCREMENT, 
-name varchar(200) DEFAULT NULL, 
-createdAt timestamp NULL DEFAULT NULL, 
-deletedAt timestamp NULL DEFAULT NULL, 
-updatedAt timestamp NULL DEFAULT NULL, 
-PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
-
 
 CREATE TABLE todoListItems ( id int(11) unsigned NOT NULL AUTO_INCREMENT, 
-firstName varchar(200) DEFAULT NULL, 
-itemStatus varchar(200) DEFAULT NULL, 
-reminder timestamp NULL DEFAULT NULL
+itemName varchar(200) NOT NULL, 
+reminder DATETIME NULL DEFAULT NULL
 todolistID int NOT NULL,
-statusId int NOT NULL,
+statusName varchar(200) NOT NULL,
 createdAt timestamp NULL DEFAULT NULL, 
 deletedAt timestamp NULL DEFAULT NULL, 
 updatedAt timestamp NULL DEFAULT NULL, 
 PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
 FOREIGN KEY (todolistID) REFERENCES todoLists(id) ON DELETE CASCADE UPDATE CASCADE
-FOREIGN KEY (statusId) REFERENCES todoListStatuses(id) ON DELETE CASCADE ON UPDATE CASCADE
 
 -- FIXME: Read the password from config
 ALTER USER 'root' IDENTIFIED WITH mysql_root_password BY 'Aswift07';
