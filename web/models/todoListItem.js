@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 const Sequelize = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
@@ -24,12 +23,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       tableName: "todoListItems",
+      freezeTableName: true,
     }
   );
 
   TodoListItem.associate = function (models) {
-    TodoList.belongsTo(models.TodoList);
-    TodoList.belongsTo(models.TodoListStatus);
+    TodoListItem.belongsTo(models.TodoList);
   };
 
   return TodoListItem;

@@ -1,6 +1,7 @@
 const { Query } = require("./queries");
 const { Mutation } = require("./mutations");
 const { GraphQLScalarType } = require("graphql");
+const { GraphQLDateTime, GraphQLDate } = require("graphql-iso-date");
 const GraphQLEmailAdressConfig = require("./emailAdressConfig");
 
 console.log("Import");
@@ -13,6 +14,10 @@ module.exports = {
   Mutation,
 
   EmailAddress: GraphQLEmailAddress,
+
+  Date: GraphQLDate,
+
+  DateTime: GraphQLDateTime,
 
   userRegister: {
     __resolveType(obj) {
