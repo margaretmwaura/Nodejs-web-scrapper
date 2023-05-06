@@ -3,6 +3,7 @@ const { Mutation } = require("./mutations");
 const { GraphQLScalarType } = require("graphql");
 const { GraphQLDateTime, GraphQLDate } = require("graphql-iso-date");
 const GraphQLEmailAdressConfig = require("./emailAdressConfig");
+const { TodoList } = require("./../../models");
 
 console.log("Import");
 console.log(GraphQLEmailAdressConfig);
@@ -30,6 +31,12 @@ module.exports = {
       }
 
       return obj.__typename;
+    },
+  },
+
+  TodoList: {
+    todoListItems(todoList) {
+      return todoList.getTodoListItems();
     },
   },
 };

@@ -8,12 +8,13 @@ const gql = require("graphql-tag");
 module.exports = gql`
   type TodoList {
     id: ID!
+    todoListItems: [TodoListItem!]!
   }
 
   type TodoListItem {
     id: ID!
     itemName: String!
-    status: String
+    statusName: String
     reminder: DateTime
   }
 

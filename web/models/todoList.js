@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
   );
   TodoList.associate = function (models) {
     TodoList.hasMany(models.TodoListItem, {
-      foreignKey: "id",
+      foreignKey: "TodoListId",
+      as: "todoListItems",
     });
   };
 
