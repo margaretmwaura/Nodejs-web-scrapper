@@ -9,6 +9,10 @@ const { types } = require("./types");
 const genericTypeDefs = gql`
   scalar EmailAddress
 
+  scalar Date
+
+  scalar DateTime
+
   type CreateError {
     message: String!
   }

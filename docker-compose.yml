@@ -8,6 +8,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=Aswift07
       - MYSQL_DATABASE=FRENCHDB
+    ports: 
+      - "3306:3306"
     restart: always
     networks:
       - app-tier

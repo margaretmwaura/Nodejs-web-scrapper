@@ -1,5 +1,6 @@
 const gql = require("graphql-tag");
 
+// TODO: The mutation should return a union
 module.exports = gql`
   type Mutation {
     createVowel(name: String, description: String, filename: String): String
@@ -7,5 +8,6 @@ module.exports = gql`
     registerUser(input: RegisterUser!): userRegister
     login(input: LoginUser!): String
     checkAuth(authorized: String): String
+    createToDoList(input: TodoListInput!): String
   }
 `;

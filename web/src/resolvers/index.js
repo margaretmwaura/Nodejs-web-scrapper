@@ -1,7 +1,9 @@
 const { Query } = require("./queries");
 const { Mutation } = require("./mutations");
 const { GraphQLScalarType } = require("graphql");
+const { GraphQLDateTime, GraphQLDate } = require("graphql-iso-date");
 const GraphQLEmailAdressConfig = require("./emailAdressConfig");
+const { TodoList } = require("./../../models");
 
 console.log("Import");
 console.log(GraphQLEmailAdressConfig);
@@ -14,6 +16,10 @@ module.exports = {
 
   EmailAddress: GraphQLEmailAddress,
 
+  Date: GraphQLDate,
+
+  DateTime: GraphQLDateTime,
+
   userRegister: {
     __resolveType(obj) {
       if (obj.message) {
@@ -25,6 +31,12 @@ module.exports = {
       }
 
       return obj.__typename;
+    },
+  },
+
+  TodoList: {
+    todoListItems(todoList) {
+      return todoList.getTodoListItems();
     },
   },
 };
