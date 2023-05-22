@@ -8,7 +8,7 @@ const { typeDefs } = require("./src/typeDefs");
 const resolvers = require("./src/resolvers");
 const { shield, rule, allow, deny, and } = require("graphql-shield");
 const { applyMiddleware } = require("graphql-middleware");
-const { makeExecutableSchema } = require("graphql-tools");
+const { makeExecutableSchema } = require("@graphql-tools/schema");
 const middleware = require("./src/middleware");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -22,6 +22,11 @@ const { WebSocketServer } = require("ws");
 const { useServer } = require("graphql-ws/lib/use/ws");
 const admin = require("firebase-admin");
 const serviceAccount = require("./config/fbServiceAccountKey.json");
+const {
+  ApolloServerPluginLandingPageGraphQLPlayground,
+} = require("@apollo/server-plugin-landing-page-graphql-playground");
+const { PubSub } = require("graphql-subscriptions");
+const pubsub = new PubSub();
 
 global.admin = admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -31,11 +36,13 @@ global.admin = admin.initializeApp({
   storageBucket: "web-scrapper-364504.appspot.com",
 });
 
-const app = express();
 // This `app` is the returned value from `express()`.
+const app = express();
 const httpServer = createServer(app);
 
 const executableSchema = makeExecutableSchema({ typeDefs, resolvers });
+
+// FIXME: Use of MiddleWare first put aside for t-shoot
 const schemaWithMiddleware = applyMiddleware(executableSchema, ...middleware);
 
 // Creating the WebSocket server
@@ -44,20 +51,14 @@ const wsServer = new WebSocketServer({
   path: "/graphql",
 });
 
-const serverCleanup = useServer({ schemaWithMiddleware }, wsServer);
+const serverCleanup = useServer({ schema: schemaWithMiddleware }, wsServer);
 
-async function startApolloServer() {
+async function startApolloServer(schemaWithMiddleware, httpServer, app) {
   const server = new ApolloServer({
-    // typeDefs,
-    // resolvers,
     schema: schemaWithMiddleware,
-    context: async ({ req, res }) => ({ req, res }),
-    introspection: true,
-    playground: true,
     plugins: [
       // Proper shutdown for the HTTP server.
       ApolloServerPluginDrainHttpServer({ httpServer }),
-
       // Proper shutdown for the WebSocket server.
       {
         async serverWillStart() {
@@ -71,21 +72,18 @@ async function startApolloServer() {
     ],
   });
 
-  // console.log(process.env.JWT_SECRET);
+  const scrapVowels = require("./crons");
 
-  // const scrapVowels = require("./crons");
-
-  // server.listen(5000).then(({ url }) => {
-  //   console.log(process.env.JWT_SECRET);
-  //   console.log("Server ready at " + url);
-  // });
   await server.start();
 
-  app.use("/graphql", cors, bodyParser.json(), expressMiddleware(server));
+  // The cors is meant to be a function please , if not the server will not be reachable and no error will be thrown
+  app.use("/graphql", cors(), bodyParser.json(), expressMiddleware(server));
 
   // Now that our HTTP server is fully set up, we can listen to it.
-  httpServer.listen("5000", () => {
-    console.log(`Server is now running on http://localhost:${5000}/graphql`);
-  });
+  console.log(process.env.JWT_SECRET);
+  const PORT = process.env.PORT;
+  console.log(PORT);
+  await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
+  console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
 }
-startApolloServer();
+startApolloServer(schemaWithMiddleware, httpServer, app);

@@ -21,6 +21,7 @@ services:
       - MYSQL_PASSWORD=Aswift07
       - MYSQL_HOST=db
       - JWT_SECRET=${JWT_SECRET}
+      - PORT=${PORT}
     ports:
       - "5000:5000"
     depends_on:
