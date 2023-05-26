@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const { TodoList, TodoListItem } = require("../../../models");
+const { pubsub } = require("./../../pubSub");
 
 // TODO: Associate the TODO with the logged in user
 module.exports.createToDoList = async (_, { input }) => {
@@ -9,12 +10,16 @@ module.exports.createToDoList = async (_, { input }) => {
 
     for (let index in todolistItems) {
       let inputItem = todolistItems[index];
-      let item = await TodoListItem.create({
+      await TodoListItem.create({
         itemName: inputItem.name,
         statusName: inputItem.status,
         TodoListId: todoList.id,
       });
     }
+
+    pubsub.publish("TODO_CREATED", {
+      todoCreated: todoList,
+    });
 
     return "Todo List has been created";
   } catch (error) {

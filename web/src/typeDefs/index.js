@@ -4,6 +4,8 @@ const Query = require("./query");
 
 const Mutation = require("./mutation");
 
+const Subscription = require("./subscriptions");
+
 const { types } = require("./types");
 
 const genericTypeDefs = gql`
@@ -18,7 +20,7 @@ const genericTypeDefs = gql`
   }
 `;
 
-const typeDefs = [Query, Mutation, genericTypeDefs, ...types];
+const typeDefs = [Query, Mutation, Subscription, genericTypeDefs, ...types];
 
 module.exports = {
   typeDefs,
