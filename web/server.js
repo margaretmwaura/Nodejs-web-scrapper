@@ -78,7 +78,17 @@ async function startApolloServer(schemaWithMiddleware, httpServer, app) {
   await server.start();
 
   // The cors is meant to be a function please , if not the server will not be reachable and no error will be thrown
-  app.use("/graphql", cors(), bodyParser.json(), expressMiddleware(server));
+  app.use(
+    "/graphql",
+    cors(),
+    bodyParser.json(),
+    expressMiddleware(server, {
+      context: async ({ req, res }) => ({
+        req,
+        res,
+      }),
+    })
+  );
 
   // Now that our HTTP server is fully set up, we can listen to it.
   console.log(process.env.JWT_SECRET);

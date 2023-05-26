@@ -2,6 +2,7 @@
 async function getUserFromSession(req) {
   try {
     console.log("we is here start");
+    console.log(req.headers);
     if (req.headers && req.headers.authtoken) {
       console.log("we is here authenticated" + req.headers.authtoken);
       let token = admin
