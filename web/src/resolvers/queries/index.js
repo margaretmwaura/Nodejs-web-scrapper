@@ -1,5 +1,5 @@
 const { getVowels } = require("./vowelQuery");
 const { getUser } = require("./userQuery");
-const { getTodoList } = require("./todoListQuery");
+const { getTodoList, getTodaysToDoList } = require("./todoListQuery");
 
-module.exports.Query = { getVowels, getUser, getTodoList };
+module.exports.Query = { getVowels, getUser, getTodoList, getTodaysToDoList };
