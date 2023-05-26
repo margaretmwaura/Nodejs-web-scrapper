@@ -6,6 +6,6 @@ module.exports = gql`
     getUserList: [User]
     getUser(email: String!): User
     getTodoList: [TodoList]
-    getTodaysToDoList: [TodoList]
+    getTodaysToDoList: TodoList
   }
 `;

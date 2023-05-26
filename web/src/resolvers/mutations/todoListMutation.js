@@ -10,7 +10,7 @@ module.exports.createToDoList = async (_, { input }) => {
 
     for (let index in todolistItems) {
       let inputItem = todolistItems[index];
-      let item = await TodoListItem.create({
+      await TodoListItem.create({
         itemName: inputItem.name,
         statusName: inputItem.status,
         TodoListId: todoList.id,
@@ -18,7 +18,7 @@ module.exports.createToDoList = async (_, { input }) => {
     }
 
     pubsub.publish("TODO_CREATED", {
-      todoCreated: "Holding on to the grace",
+      todoCreated: todoList,
     });
 
     return "Todo List has been created";

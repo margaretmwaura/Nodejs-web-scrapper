@@ -1,5 +1,9 @@
 FROM node:16
 
+# This is important for setting the time zone
+ENV TZ=Africa/Nairobi
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Create app directory
 WORKDIR /usr/src/app
 
