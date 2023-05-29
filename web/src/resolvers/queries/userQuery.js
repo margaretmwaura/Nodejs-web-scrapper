@@ -24,9 +24,8 @@ module.exports.getUserList = async (root, args, { user }) => {
     if (search) {
       query.where = {
         [Op.or]: [
-          search.firstName ? { firstName: search.firstName } : null,
-          search.lastName ? { lastName: search.lastName } : null,
-          search.employeeId ? { employeeId: search.employeeId } : null,
+          search.first_name ? { first_name: search.first_name } : null,
+          search.last_name ? { lastName: search.last_name } : null,
         ],
       };
     }

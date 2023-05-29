@@ -13,8 +13,8 @@ module.exports = gql`
 
   type TodoListItem {
     id: ID!
-    itemName: String!
-    statusName: String
+    item_name: String!
+    status_name: String
     reminder: DateTime
   }
 

@@ -6,7 +6,7 @@ const jsonwebtoken = require("jsonwebtoken");
 module.exports.registerUser = async (_, { input }, context) => {
   console.log("we have been called ayyeee");
   console.log(input);
-  const { firstName, lastName, email, password } = input;
+  const { first_name, last_name, email, password } = input;
   try {
     const userCheck = await User.findOne({
       where: {
@@ -20,16 +20,16 @@ module.exports.registerUser = async (_, { input }, context) => {
       };
     }
     const user = await User.create({
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       email,
       password,
     });
 
     let createdUser = {
       employeeId: user.employeeId,
-      firstName: user.firstName,
-      lastName: user.lastName,
+      first_name: user.first_name,
+      last_name: user.last_name,
       email: user.email,
     };
 

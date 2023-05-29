@@ -8,11 +8,14 @@ module.exports.createToDoList = async (_, { input }) => {
   try {
     let todoList = await TodoList.create({});
 
+    console.log("Foreign key value");
+    console.log(todoList.id);
+
     for (let index in todolistItems) {
       let inputItem = todolistItems[index];
       await TodoListItem.create({
-        itemName: inputItem.name,
-        statusName: inputItem.status,
+        item_name: inputItem.name,
+        status_name: inputItem.status,
         TodoListId: todoList.id,
       });
     }

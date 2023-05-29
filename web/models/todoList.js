@@ -11,9 +11,27 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        name: "createdAt",
+        field: "created_at",
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        name: "updatedAt",
+        field: "updated_at",
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        name: "updatedAt",
+        field: "updated_at",
+      },
     },
     {
       tableName: "todoLists",
+      timestamps: true,
+      underscored: true,
     }
   );
   TodoList.associate = function (models) {
