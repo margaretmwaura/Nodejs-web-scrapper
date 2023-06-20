@@ -27,4 +27,10 @@ module.exports = gql`
   input TodoListInput {
     todoListItems: [ToDoListItemsInput]!
   }
+
+  input UpdateTodoListItem {
+    id: ID!
+    status_name: String
+    reminder: DateTime
+  }
 `;

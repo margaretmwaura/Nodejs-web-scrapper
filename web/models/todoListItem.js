@@ -1,5 +1,7 @@
 const Sequelize = require("sequelize");
 
+// https://sequelize.org/docs/v6/other-topics/naming-strategies/
+
 module.exports = (sequelize, DataTypes) => {
   const TodoListItem = sequelize.define(
     "TodoListItem",
