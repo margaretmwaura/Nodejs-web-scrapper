@@ -42,10 +42,16 @@ module.exports.updateTodoListItem = async (_, { input }) => {
       where: { id: item_id },
     });
 
-    // FIXME: Check on how to properly publish this change
-    // pubsub.publish("TODO_CREATED", {
-    //   todoCreated: todoList,
-    // });
+    let todoListItem = await TodoListItem.findOne({
+      where: { id: item_id },
+      include: "todoList",
+    });
+
+    let todo = todoListItem.todoList;
+
+    pubsub.publish("TODO_CREATED", {
+      todoCreated: todo,
+    });
 
     return "Todo List item has been updated successfully";
   } catch (error) {

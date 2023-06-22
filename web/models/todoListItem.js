@@ -48,7 +48,10 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   TodoListItem.associate = function (models) {
-    TodoListItem.belongsTo(models.TodoList);
+    TodoListItem.belongsTo(models.TodoList, {
+      foreignKey: "TodoListId",
+      as: "todoList",
+    });
   };
 
   return TodoListItem;

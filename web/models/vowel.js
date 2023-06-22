@@ -39,8 +39,8 @@ module.exports = function (sequelize, DataTypes) {
       },
       deletedAt: {
         type: DataTypes.DATE,
-        name: "updatedAt",
-        field: "updated_at",
+        name: "deletedAt",
+        field: "deleted_at",
       },
     },
     {

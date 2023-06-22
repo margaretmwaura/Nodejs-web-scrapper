@@ -27,7 +27,7 @@ module.exports.registerUser = async (_, { input }, context) => {
     });
 
     let createdUser = {
-      employeeId: user.employeeId,
+      // employeeId: user.employeeId,
       first_name: user.first_name,
       last_name: user.last_name,
       email: user.email,
