@@ -22,7 +22,7 @@ module.exports = gql`
   }
 
   input ToDoListItemsInput {
-    name: String!
+    item_name: String!
     status: String
     reminder: DateTime
   }
@@ -35,5 +35,11 @@ module.exports = gql`
     id: ID!
     status_name: String
     reminder: DateTime
+    item_name: String
+  }
+
+  input addTodoListItem {
+    id: ID!
+    item_name: String
   }
 `;
