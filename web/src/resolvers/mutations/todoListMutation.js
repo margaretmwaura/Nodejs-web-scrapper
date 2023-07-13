@@ -3,8 +3,8 @@ const { TodoList, TodoListItem } = require("../../../models");
 const { pubsub } = require("./../../pubSub");
 const CronJob = require("./../../../lib/cron.js").CronJob;
 const manager = require("./../../../crons");
-let sid = "ACcc1d030cb0c2f358ec6acebe673a4ad9";
-let auth_token = "6c01120dac7b4c3913c17f0663542e26";
+let sid = process.env.SID;
+let auth_token = process.env.AUTH_TOKEN;
 const twilio = require("twilio")(sid, auth_token);
 
 // TODO: Associate the TODO with the logged in user
@@ -62,7 +62,7 @@ module.exports.updateTodoListItem = async (_, { input }) => {
       include: "todoList",
     });
 
-    await schedulingReminder(todoListItem.key_name, todoListItem.reminder);
+    await schedulingReminder(todoListItem.key_name, input.reminder);
 
     let todo = todoListItem.todoList;
 
@@ -102,22 +102,28 @@ async function schedulingReminder(key, time) {
   console.log("Before time instantiation" + time);
   let date = new Date();
   date.setSeconds(date.getSeconds() + 2);
-  console.log(date);
   console.log("After time instantiation");
-  manager.add(key, date, () => {
-    console.log("This is running for task " + key);
-    twilio.messages
-      .create({
-        from: number,
-        to: "+254715420981",
-        body: "Girlllll we got work to do",
-      })
-      .then(() => {
-        console.log("We sent message");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
-  manager.start(key);
+  console.log(date);
+  console.log(time);
+
+  if (time) {
+    manager.add(key, date, () => {
+      console.log("This is running for task " + key);
+      twilio.messages
+        .create({
+          from: number,
+          to: "+254715420981",
+          body: "Girlllll we got work to do",
+        })
+        .then(() => {
+          console.log("We sent message");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+    manager.start(key);
+  } else {
+    console.log("We do not need no reminders miss ma'am");
+  }
 }
