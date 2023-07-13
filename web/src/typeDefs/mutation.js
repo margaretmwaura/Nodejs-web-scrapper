@@ -11,5 +11,6 @@ module.exports = gql`
     createToDoList(input: TodoListInput!): String
     updateTodoListItem(input: UpdateTodoListItem!): String
     addTodoListItem(input: addTodoListItem!): String
+    deleteTodoListItem(id: String, key_name: String): String
   }
 `;

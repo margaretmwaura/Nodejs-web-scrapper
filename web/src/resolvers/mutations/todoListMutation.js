@@ -11,7 +11,6 @@ const twilio = require("twilio")(sid, auth_token);
 module.exports.createToDoList = async (_, { input }) => {
   let items = input.todoListItems;
   for (let item of items) {
-    console.log(item);
     let item_name = item.item_name;
     const key = item_name
       .split(" ")
@@ -40,7 +39,6 @@ module.exports.createToDoList = async (_, { input }) => {
 
     return "Todo List has been created";
   } catch (error) {
-    console.log("The error");
     console.log(error);
   }
 };
@@ -49,8 +47,6 @@ module.exports.updateTodoListItem = async (_, { input }) => {
   let item_id = input.id;
 
   delete input.id;
-
-  console.log(input);
 
   try {
     await TodoListItem.update(input, {
@@ -95,6 +91,20 @@ module.exports.addTodoListItem = async (_, { input }) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+module.exports.deleteTodoListItem = async (_, { id, key_name }) => {
+  await TodoList.destroy({
+    where: { id: id },
+  });
+
+  if (manager.exists(key_name)) {
+    manager.deleteJob(key_name);
+    console.log("The job has been deleted");
+  } else {
+    console.log("There was no job");
+  }
+  return "Todo List item has been deleted successfully";
 };
 
 async function schedulingReminder(key, time) {
