@@ -1,12 +1,25 @@
 const Sequelize = require("sequelize");
 const { TodoList, TodoListItem } = require("../../../models");
 const { pubsub } = require("./../../pubSub");
+const CronJob = require("./../../../lib/cron.js").CronJob;
+const manager = require("./../../../crons");
+let sid = "ACcc1d030cb0c2f358ec6acebe673a4ad9";
+let auth_token = "6c01120dac7b4c3913c17f0663542e26";
+const twilio = require("twilio")(sid, auth_token);
 
 // TODO: Associate the TODO with the logged in user
 module.exports.createToDoList = async (_, { input }) => {
   let items = input.todoListItems;
-  console.log("start");
-  console.log(items);
+  for (let item of items) {
+    console.log(item);
+    let item_name = item.item_name;
+    const key = item_name
+      .split(" ")
+      .map((word) => word.charAt(0))
+      .join("")
+      .toUpperCase();
+    item.key_name = key;
+  }
   try {
     let todoList = await TodoList.create(
       {
@@ -49,6 +62,8 @@ module.exports.updateTodoListItem = async (_, { input }) => {
       include: "todoList",
     });
 
+    await schedulingReminder(todoListItem.key_name, todoListItem.reminder);
+
     let todo = todoListItem.todoList;
 
     pubsub.publish("TODO_CREATED", {
@@ -81,3 +96,28 @@ module.exports.addTodoListItem = async (_, { input }) => {
     console.log(error);
   }
 };
+
+async function schedulingReminder(key, time) {
+  let number = "+12345401823";
+  console.log("Before time instantiation" + time);
+  let date = new Date();
+  date.setSeconds(date.getSeconds() + 2);
+  console.log(date);
+  console.log("After time instantiation");
+  manager.add(key, date, () => {
+    console.log("This is running for task " + key);
+    twilio.messages
+      .create({
+        from: number,
+        to: "+254715420981",
+        body: "Girlllll we got work to do",
+      })
+      .then(() => {
+        console.log("We sent message");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+  manager.start(key);
+}

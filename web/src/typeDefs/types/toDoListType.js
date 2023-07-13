@@ -16,6 +16,7 @@ module.exports = gql`
   type TodoListItem {
     id: ID!
     item_name: String!
+    key_name: String!
     status_name: String
     reminder: String
     todoList: TodoList!

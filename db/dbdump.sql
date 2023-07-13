@@ -30,6 +30,7 @@ PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
 
 CREATE TABLE todoListItems ( id int(11) unsigned NOT NULL AUTO_INCREMENT, 
 item_name varchar(200) NOT NULL, 
+key_name varchar(200) NOT NULL,
 reminder DATETIME NULL DEFAULT NULL,
 todo_list_id int(11) unsigned NOT NULL,
 status_name varchar(200) NOT NULL,

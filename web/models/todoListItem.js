@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       item_name: { type: DataTypes.STRING, allowNull: false },
+      key_name: { type: DataTypes.STRING, allowNull: false },
       reminder: {
         type: DataTypes.DATE,
         allowNull: true,

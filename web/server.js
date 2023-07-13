@@ -20,22 +20,9 @@ const {
 } = require("@apollo/server/plugin/drainHttpServer");
 const { WebSocketServer } = require("ws");
 const { useServer } = require("graphql-ws/lib/use/ws");
-const admin = require("firebase-admin");
-const serviceAccount = require("./config/fbServiceAccountKey.json");
-const {
-  ApolloServerPluginLandingPageGraphQLPlayground,
-} = require("@apollo/server-plugin-landing-page-graphql-playground");
 const { PubSub } = require("graphql-subscriptions");
 const pubsub = new PubSub();
 const moment = require("moment");
-
-global.admin = admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-
-  // FIXME: This should be moved to a config or .env
-  databaseURL: "https://web-scrapper-364504-default-rtdb.firebaseio.com",
-  storageBucket: "web-scrapper-364504.appspot.com",
-});
 
 // This `app` is the returned value from `express()`.
 const app = express();
@@ -73,7 +60,7 @@ async function startApolloServer(schemaWithMiddleware, httpServer, app) {
     ],
   });
 
-  const scrapVowels = require("./crons");
+  require("./crons");
 
   await server.start();
 
