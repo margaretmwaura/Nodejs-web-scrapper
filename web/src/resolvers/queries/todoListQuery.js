@@ -17,10 +17,16 @@ module.exports.getTodaysToDoList = async () => {
   const TODAY_START = moment().format("YYYY-MM-DD 00:00");
   const TODAY_END = moment().format("YYYY-MM-DD 23:59");
 
+  // TODO: Remove the console after setting mysql date
+  console.log("Start");
+  console.log(TODAY_START);
+  console.log("End");
+  console.log(TODAY_END);
+
   try {
     const todoList = await TodoList.findOne({
       where: {
-        createdAt: {
+        created_at: {
           [Op.between]: [TODAY_START, TODAY_END],
         },
       },

@@ -1,8 +1,9 @@
-const schedule = require("node-schedule");
+// // 0 5 * * *
 
-const { getAllData } = require("./jobs/scrapVowels");
-schedule.scheduleJob("20 6 * * *", () => {
-  getAllData();
-});
+// const { getAllData } = require("./jobs/scrapVowels");
 
-// 0 5 * * *
+var CronJobManager = require("cron-job-manager");
+let manager = new CronJobManager();
+// manager.add("scrap_vowels", "*/5 * * * *", getAllData);
+// manager.start("scrap_vowels");
+module.exports = manager;

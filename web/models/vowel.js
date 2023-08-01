@@ -26,11 +26,28 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING(2000),
         allowNull: true,
       },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        name: "createdAt",
+        field: "created_at",
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        name: "updatedAt",
+        field: "updated_at",
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        name: "deletedAt",
+        field: "deleted_at",
+      },
     },
     {
       sequelize,
       tableName: "vowels",
       timestamps: true,
+      underscored: true,
       paranoid: true,
       indexes: [
         {

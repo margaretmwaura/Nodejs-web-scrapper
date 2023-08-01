@@ -1,6 +1,5 @@
 // We still have this require incase we need to use the values in the .env
 require("dotenv").config({ path: "../.env" });
-
 const { ApolloServer } = require("@apollo/server");
 const gql = require("graphql-tag");
 const fs = require("fs");
@@ -20,22 +19,9 @@ const {
 } = require("@apollo/server/plugin/drainHttpServer");
 const { WebSocketServer } = require("ws");
 const { useServer } = require("graphql-ws/lib/use/ws");
-const admin = require("firebase-admin");
-const serviceAccount = require("./config/fbServiceAccountKey.json");
-const {
-  ApolloServerPluginLandingPageGraphQLPlayground,
-} = require("@apollo/server-plugin-landing-page-graphql-playground");
 const { PubSub } = require("graphql-subscriptions");
 const pubsub = new PubSub();
 const moment = require("moment");
-
-global.admin = admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-
-  // FIXME: This should be moved to a config or .env
-  databaseURL: "https://web-scrapper-364504-default-rtdb.firebaseio.com",
-  storageBucket: "web-scrapper-364504.appspot.com",
-});
 
 // This `app` is the returned value from `express()`.
 const app = express();
@@ -73,12 +59,22 @@ async function startApolloServer(schemaWithMiddleware, httpServer, app) {
     ],
   });
 
-  const scrapVowels = require("./crons");
+  require("./crons");
 
   await server.start();
 
   // The cors is meant to be a function please , if not the server will not be reachable and no error will be thrown
-  app.use("/graphql", cors(), bodyParser.json(), expressMiddleware(server));
+  app.use(
+    "/graphql",
+    cors(),
+    bodyParser.json(),
+    expressMiddleware(server, {
+      context: async ({ req, res }) => ({
+        req,
+        res,
+      }),
+    })
+  );
 
   // Now that our HTTP server is fully set up, we can listen to it.
   console.log(process.env.JWT_SECRET);

@@ -4,40 +4,41 @@ CREATE TABLE vowels ( id int(11) unsigned NOT NULL AUTO_INCREMENT,
 name varchar(200) DEFAULT NULL, 
 description varchar(200) DEFAULT NULL, 
 filename varchar(2000) DEFAULT NULL, 
-createdAt timestamp NULL DEFAULT NULL, 
-deletedAt timestamp NULL DEFAULT NULL, 
-updatedAt timestamp NULL DEFAULT NULL, 
+created_at timestamp NULL DEFAULT NULL, 
+deleted_at timestamp NULL DEFAULT NULL, 
+updated_at timestamp NULL DEFAULT NULL, 
 PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE users ( id int(11) unsigned NOT NULL AUTO_INCREMENT, 
-firstName varchar(200) DEFAULT NULL, 
-lastName varchar(200) DEFAULT NULL, 
+first_name varchar(200) DEFAULT NULL, 
+last_name varchar(200) DEFAULT NULL, 
 email varchar(200) DEFAULT NULL, 
 password varchar(200) DEFAULT NULL, 
-createdAt timestamp NULL DEFAULT NULL, 
-deletedAt timestamp NULL DEFAULT NULL, 
-updatedAt timestamp NULL DEFAULT NULL, 
+created_at timestamp NULL DEFAULT NULL, 
+deleted_at timestamp NULL DEFAULT NULL, 
+updated_at timestamp NULL DEFAULT NULL, 
 PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE todoLists ( id int(11) unsigned NOT NULL AUTO_INCREMENT, 
-createdAt timestamp NULL DEFAULT NULL, 
-deletedAt timestamp NULL DEFAULT NULL, 
-updatedAt timestamp NULL DEFAULT NULL, 
+created_at timestamp NULL DEFAULT NULL, 
+deleted_at timestamp NULL DEFAULT NULL, 
+updated_at timestamp NULL DEFAULT NULL, 
 PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE todoListItems ( id int(11) unsigned NOT NULL AUTO_INCREMENT, 
-itemName varchar(200) NOT NULL, 
+item_name varchar(200) NOT NULL, 
+key_name varchar(200) NOT NULL,
 reminder DATETIME NULL DEFAULT NULL,
-TodoListId int(11) unsigned NOT NULL,
-statusName varchar(200) NOT NULL,
-createdAt timestamp NULL DEFAULT NULL, 
-deletedAt timestamp NULL DEFAULT NULL, 
-updatedAt timestamp NULL DEFAULT NULL, 
-PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
-FOREIGN KEY (TodoListId) REFERENCES todoLists(id) ON DELETE CASCADE UPDATE CASCADE
+todo_list_id int(11) unsigned NOT NULL,
+status_name varchar(200) NOT NULL,
+created_at timestamp NULL DEFAULT NULL, 
+deleted_at timestamp NULL DEFAULT NULL, 
+updated_at timestamp NULL DEFAULT NULL, 
+PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1
+FOREIGN KEY (todo_list_id) REFERENCES todoLists(id) ON DELETE CASCADE UPDATE CASCADE
 
 
 -- FIXME: Read the password from config

@@ -3,7 +3,7 @@ const { Mutation } = require("./mutations");
 const { GraphQLScalarType } = require("graphql");
 const { GraphQLDateTime, GraphQLDate } = require("graphql-iso-date");
 const GraphQLEmailAdressConfig = require("./emailAdressConfig");
-const { TodoList } = require("./../../models");
+const { TodoList, TodoListItem } = require("./../../models");
 const { pubsub } = require("./../pubSub");
 const { withFilter } = require("graphql-subscriptions");
 const moment = require("moment");
@@ -63,6 +63,14 @@ module.exports = {
   TodoList: {
     todoListItems(todoList) {
       return todoList.getTodoListItems();
+    },
+  },
+
+  TodoListItem: {
+    todoList: (todoListItem) => {
+      // thing is an instance of your Sequelize model
+      // thing.creation_date is an instance of Date
+      return todoListItem.getTodoList();
     },
   },
 };

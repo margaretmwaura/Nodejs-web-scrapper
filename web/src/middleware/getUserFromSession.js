@@ -1,10 +1,13 @@
 // FIXME: Change this to be using the bearer token format
+
+const firebaseAdmin = require("./../firebase_admin");
 async function getUserFromSession(req) {
   try {
     console.log("we is here start");
+    console.log(req.headers);
     if (req.headers && req.headers.authtoken) {
       console.log("we is here authenticated" + req.headers.authtoken);
-      let token = admin
+      let token = firebaseAdmin
         .auth()
         .verifyIdToken(req.headers.authtoken)
         .then(() => {

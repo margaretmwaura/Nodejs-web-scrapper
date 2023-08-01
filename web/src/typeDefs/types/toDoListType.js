@@ -5,6 +5,8 @@ const gql = require("graphql-tag");
 // 2. The foreign key aspect is missing in todolist item
 // 3. Reminder is missing in ToDoList item
 // 4. Test the input property
+
+// FIXME: The reminder has a data type of string proper ways to solve this
 module.exports = gql`
   type TodoList {
     id: ID!
@@ -13,18 +15,37 @@ module.exports = gql`
 
   type TodoListItem {
     id: ID!
-    itemName: String!
-    statusName: String
-    reminder: DateTime
+    item_name: String!
+    key_name: String!
+    status_name: String
+    reminder: String
+    todoList: TodoList!
   }
 
   input ToDoListItemsInput {
-    name: String!
+    item_name: String!
     status: String
     reminder: DateTime
   }
 
   input TodoListInput {
     todoListItems: [ToDoListItemsInput]!
+  }
+
+  input UpdateTodoListItem {
+    id: ID!
+    status_name: String
+    reminder: DateTime
+    item_name: String
+  }
+
+  input AddTodoListItem {
+    id: ID!
+    item_name: String
+  }
+
+  input DeleteTodoListItem {
+    id: ID!
+    item_name: String
   }
 `;

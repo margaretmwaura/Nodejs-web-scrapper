@@ -11,10 +11,26 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      firstName: { type: DataTypes.STRING, allowNull: true },
-      lastName: { type: DataTypes.STRING, allowNull: true },
+      first_name: { type: DataTypes.STRING, allowNull: true },
+      last_name: { type: DataTypes.STRING, allowNull: true },
       email: { type: DataTypes.STRING, allowNull: false, unique: true },
       password: { type: DataTypes.STRING, allowNull: false },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        name: "createdAt",
+        field: "created_at",
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        name: "updatedAt",
+        field: "updated_at",
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        name: "updatedAt",
+        field: "updated_at",
+      },
     },
     {
       tableName: "users",
@@ -35,6 +51,8 @@ module.exports = (sequelize, DataTypes) => {
       defaultScope: {
         rawAttributes: { exclude: ["password"] },
       },
+      timestamps: true,
+      underscored: true,
     }
   );
 
