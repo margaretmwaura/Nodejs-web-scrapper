@@ -1,3 +1,5 @@
+require("dotenv").config({ path: require("find-config")(".env") });
+
 const Sequelize = require("sequelize");
 const { TodoList, TodoListItem } = require("../../../models");
 const { pubsub } = require("./../../pubSub");
@@ -5,7 +7,10 @@ const CronJob = require("./../../../lib/cron.js").CronJob;
 const manager = require("./../../../crons");
 let sid = process.env.SID;
 let auth_token = process.env.AUTH_TOKEN;
-const twilio = require("twilio")(sid, auth_token);
+console.log("The twilio access details");
+console.log(sid);
+console.log(auth_token);
+// const twilio = require("twilio")("saklkkllksa", "ajjkkjjks");
 
 // TODO: Associate the TODO with the logged in user
 module.exports.createToDoList = async (_, { input }) => {
@@ -93,7 +98,19 @@ module.exports.addTodoListItem = async (_, { input }) => {
   }
 };
 
-module.exports.deleteTodoListItem = async (_, { id, key_name }) => {
+module.exports.deleteTodoListItem = async (_, { input }) => {
+  let { id, key_name } = input;
+
+  let todoListItem = await TodoListItem.findOne({
+    where: { id: id },
+    include: "todoList",
+  });
+
+  let todo = todoListItem.todoList;
+
+  console.log("The todo");
+  console.log(todo);
+
   await TodoList.destroy({
     where: { id: id },
   });
@@ -102,8 +119,13 @@ module.exports.deleteTodoListItem = async (_, { id, key_name }) => {
     manager.deleteJob(key_name);
     console.log("The job has been deleted");
   } else {
-    console.log("There was no job");
+    console.log("There was no job ");
   }
+
+  pubsub.publish("TODO_CREATED", {
+    todoCreated: todo,
+  });
+
   return "Todo List item has been deleted successfully";
 };
 
@@ -119,18 +141,18 @@ async function schedulingReminder(key, time) {
   if (time) {
     manager.add(key, date, () => {
       console.log("This is running for task " + key);
-      twilio.messages
-        .create({
-          from: number,
-          to: "+254715420981",
-          body: "Girlllll we got work to do",
-        })
-        .then(() => {
-          console.log("We sent message");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      // twilio.messages
+      //   .create({
+      //     from: number,
+      //     to: "+254715420981",
+      //     body: "Girlllll we got work to do",
+      //   })
+      //   .then(() => {
+      //     console.log("We sent message");
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
     });
     manager.start(key);
   } else {

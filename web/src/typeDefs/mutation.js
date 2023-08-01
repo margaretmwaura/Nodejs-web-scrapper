@@ -10,7 +10,7 @@ module.exports = gql`
     checkAuth(authorized: String): String
     createToDoList(input: TodoListInput!): String
     updateTodoListItem(input: UpdateTodoListItem!): String
-    addTodoListItem(input: addTodoListItem!): String
-    deleteTodoListItem(id: String, key_name: String): String
+    addTodoListItem(input: AddTodoListItem!): String
+    deleteTodoListItem(input: DeleteTodoListItem!): String
   }
 `;

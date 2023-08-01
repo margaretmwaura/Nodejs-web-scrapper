@@ -39,7 +39,12 @@ module.exports = gql`
     item_name: String
   }
 
-  input addTodoListItem {
+  input AddTodoListItem {
+    id: ID!
+    item_name: String
+  }
+
+  input DeleteTodoListItem {
     id: ID!
     item_name: String
   }

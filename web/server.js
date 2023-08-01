@@ -1,6 +1,5 @@
 // We still have this require incase we need to use the values in the .env
 require("dotenv").config({ path: "../.env" });
-
 const { ApolloServer } = require("@apollo/server");
 const gql = require("graphql-tag");
 const fs = require("fs");

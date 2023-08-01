@@ -37,7 +37,7 @@ status_name varchar(200) NOT NULL,
 created_at timestamp NULL DEFAULT NULL, 
 deleted_at timestamp NULL DEFAULT NULL, 
 updated_at timestamp NULL DEFAULT NULL, 
-PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
+PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1
 FOREIGN KEY (todo_list_id) REFERENCES todoLists(id) ON DELETE CASCADE UPDATE CASCADE
 
 
