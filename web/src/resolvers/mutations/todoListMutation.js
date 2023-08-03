@@ -79,9 +79,15 @@ module.exports.updateTodoListItem = async (_, { input }) => {
 
 module.exports.addTodoListItem = async (_, { input }) => {
   try {
+    const key = input.item_name
+      .split(" ")
+      .map((word) => word.charAt(0))
+      .join("")
+      .toUpperCase();
     await TodoListItem.create({
       item_name: input.item_name,
       TodoListId: input.id,
+      key_name: key,
     });
 
     let todo = await TodoList.findOne({
@@ -111,7 +117,7 @@ module.exports.deleteTodoListItem = async (_, { input }) => {
   console.log("The todo");
   console.log(todo);
 
-  await TodoList.destroy({
+  await TodoListItem.destroy({
     where: { id: id },
   });
 

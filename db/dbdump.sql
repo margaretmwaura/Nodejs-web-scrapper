@@ -28,7 +28,8 @@ updated_at timestamp NULL DEFAULT NULL,
 PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
 
 
-CREATE TABLE todoListItems ( id int(11) unsigned NOT NULL AUTO_INCREMENT, 
+CREATE TABLE todoListItems ( 
+id int(11) unsigned NOT NULL AUTO_INCREMENT, 
 item_name varchar(200) NOT NULL, 
 key_name varchar(200) NOT NULL,
 reminder DATETIME NULL DEFAULT NULL,
@@ -37,8 +38,8 @@ status_name varchar(200) NOT NULL,
 created_at timestamp NULL DEFAULT NULL, 
 deleted_at timestamp NULL DEFAULT NULL, 
 updated_at timestamp NULL DEFAULT NULL, 
-PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1
-FOREIGN KEY (todo_list_id) REFERENCES todoLists(id) ON DELETE CASCADE UPDATE CASCADE
+PRIMARY KEY (id),
+FOREIGN KEY (todo_list_id) REFERENCES todoLists(id) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
 
 
 -- FIXME: Read the password from config
