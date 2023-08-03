@@ -4,6 +4,7 @@ const axios = require("axios");
 const fs = require("fs");
 const { Vowel } = require("../../models");
 const firebaseAdmin = require("./../../src/firebase_admin");
+const { logger } = require("./../../logger");
 
 // We have imported this to allow for importing of a json file
 const { createRequire } = require("module");
@@ -52,7 +53,6 @@ async function getAllData() {
     .then(async () => {
       await extractData(root);
     });
-  // console.log("items all: ");
 }
 
 async function getAudio(root) {
@@ -64,9 +64,9 @@ async function getAudio(root) {
   // check if directory exists
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, true);
-    console.log("created file nyadhiwa");
+    logger.info("created file nyadhiwa");
   } else {
-    console.log("file already existed nyadhiwa");
+    logger.info("file already existed nyadhiwa");
   }
 
   // const promises = audios.map(async (audio_element) => {
@@ -140,9 +140,9 @@ async function extractData(root) {
     let description = allDescriptions[i];
     let url = signedUrls[i];
 
-    console.log(letter);
-    console.log(description);
-    console.log(url);
+    logger.info(letter);
+    logger.info(description);
+    logger.info(url);
     try {
       Vowel.create({
         name: letter,
@@ -150,7 +150,7 @@ async function extractData(root) {
         filename: url,
       });
     } catch (err) {
-      console.log(err);
+      logger.info(err);
     }
   }
 }
@@ -163,10 +163,10 @@ async function truncateTheDB() {
     truncate: true,
   })
     .then(function () {
-      console.log("Data deleted"); // Success
+      logger.info("Data deleted"); // Success
     })
     .catch(function (error) {
-      console.log(error); // Failure
+      logger.info(error); // Failure
     });
 }
 

@@ -22,6 +22,7 @@ const { useServer } = require("graphql-ws/lib/use/ws");
 const { PubSub } = require("graphql-subscriptions");
 const pubsub = new PubSub();
 const moment = require("moment");
+const { logger } = require("./logger");
 
 // This `app` is the returned value from `express()`.
 const app = express();
@@ -78,8 +79,9 @@ async function startApolloServer(schemaWithMiddleware, httpServer, app) {
 
   // Now that our HTTP server is fully set up, we can listen to it.
   console.log(process.env.JWT_SECRET);
-  const PORT = process.env.PORT;
+  let PORT = process.env.PORT;
   console.log(PORT);
+  PORT = 5000;
   await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
   console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
 }
