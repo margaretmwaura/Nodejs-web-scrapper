@@ -10,7 +10,7 @@ let auth_token = process.env.AUTH_TOKEN;
 console.log("The twilio access details");
 console.log(sid);
 console.log(auth_token);
-// const twilio = require("twilio")("saklkkllksa", "ajjkkjjks");
+const twilio = require("twilio")(sid, auth_token);
 
 // TODO: Associate the TODO with the logged in user
 module.exports.createToDoList = async (_, { input }) => {
@@ -145,20 +145,20 @@ async function schedulingReminder(key, time) {
   console.log(time);
 
   if (time) {
-    manager.add(key, date, () => {
+    manager.add(key, time, () => {
       console.log("This is running for task " + key);
-      // twilio.messages
-      //   .create({
-      //     from: number,
-      //     to: "+254715420981",
-      //     body: "Girlllll we got work to do",
-      //   })
-      //   .then(() => {
-      //     console.log("We sent message");
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      twilio.messages
+        .create({
+          from: number,
+          to: "+254715420981",
+          body: "Girlllll we got work to do",
+        })
+        .then(() => {
+          console.log("We sent message");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
     manager.start(key);
   } else {
