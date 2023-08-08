@@ -5,6 +5,7 @@ module.exports = gql`
     id: ID!
     topic: String
     content: String
+    createdAt: String
   }
 
   input CreateNote {
