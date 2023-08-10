@@ -38,6 +38,11 @@ module.exports = {
         }
       ),
     },
+    noteAdded: {
+      subscribe() {
+        return pubsub.asyncIterator("NOTE_ADDED");
+      },
+    },
   },
 
   EmailAddress: GraphQLEmailAddress,

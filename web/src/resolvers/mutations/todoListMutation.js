@@ -7,9 +7,6 @@ const CronJob = require("./../../../lib/cron.js").CronJob;
 const manager = require("./../../../crons");
 let sid = process.env.SID;
 let auth_token = process.env.AUTH_TOKEN;
-console.log("The twilio access details");
-console.log(sid);
-console.log(auth_token);
 const twilio = require("twilio")(sid, auth_token);
 
 // TODO: Associate the TODO with the logged in user
