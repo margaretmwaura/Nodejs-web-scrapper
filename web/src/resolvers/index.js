@@ -38,7 +38,7 @@ module.exports = {
         }
       ),
     },
-    noteAdded: {
+    noteSubcription: {
       subscribe() {
         return pubsub.asyncIterator("NOTE_ADDED");
       },

@@ -46,7 +46,7 @@ CREATE TABLE notes (
 id int(11) unsigned NOT NULL AUTO_INCREMENT, 
 topic varchar(200) NOT NULL, 
 content varchar(32765) NOT NULL, 
-created_at timestamp NULL DEFAULT NULL, 
+created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, 
 deleted_at timestamp NULL DEFAULT NULL, 
 updated_at timestamp NULL DEFAULT NULL, 
 PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
