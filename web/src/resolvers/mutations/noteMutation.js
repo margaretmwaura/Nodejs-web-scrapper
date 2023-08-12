@@ -11,7 +11,7 @@ module.exports.createNote = async (_, { input }) => {
       topic: topic,
       content: content,
     });
-    pubsub.publish("NOTE_ADDED", {
+    pubsub.publish("NOTE_SUB", {
       noteSubcription: {
         mutation: "Create",
         data: newNote,
@@ -20,5 +20,34 @@ module.exports.createNote = async (_, { input }) => {
     return "Note has been created";
   } catch (error) {
     console.log(error);
+  }
+};
+
+module.exports.updateNote = async (_, { input }) => {
+  console.log("Mutation calls for update");
+  let note_id = input.id;
+
+  delete input.id;
+
+  try {
+    console.log("We are updating");
+    await Note.update(input, {
+      where: { id: note_id },
+    });
+
+    let note = await Note.findOne({
+      where: { id: note_id },
+    });
+
+    pubsub.publish("NOTE_SUB", {
+      noteSubcription: {
+        mutation: "Edit",
+        data: note,
+      },
+    });
+
+    return "Note has been updated successfully";
+  } catch (error) {
+    console.log("Error");
   }
 };

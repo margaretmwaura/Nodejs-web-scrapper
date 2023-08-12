@@ -7,7 +7,7 @@ const {
   addTodoListItem,
   deleteTodoListItem,
 } = require("./todoListMutation");
-const { createNote } = require("./noteMutation");
+const { createNote, updateNote } = require("./noteMutation");
 module.exports.Mutation = {
   createVowel,
   deleteVowels,
@@ -19,4 +19,5 @@ module.exports.Mutation = {
   addTodoListItem,
   deleteTodoListItem,
   createNote,
+  updateNote,
 };

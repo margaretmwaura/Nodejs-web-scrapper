@@ -40,7 +40,7 @@ module.exports = {
     },
     noteSubcription: {
       subscribe() {
-        return pubsub.asyncIterator("NOTE_ADDED");
+        return pubsub.asyncIterator("NOTE_SUB");
       },
     },
   },

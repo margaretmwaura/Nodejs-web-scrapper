@@ -12,4 +12,10 @@ module.exports = gql`
     topic: String
     content: String
   }
+
+  input UpdateNote {
+    id: ID!
+    topic: String
+    content: String
+  }
 `;
