@@ -51,3 +51,26 @@ module.exports.updateNote = async (_, { input }) => {
     console.log("Error");
   }
 };
+
+module.exports.deleteNote = async (_, { id }) => {
+  try {
+    let note = await Note.findOne({
+      where: { id: id },
+    });
+
+    await Note.destroy({
+      where: { id: id },
+    });
+
+    pubsub.publish("NOTE_SUB", {
+      noteSubcription: {
+        mutation: "Delete",
+        data: note,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+
+  return "Note has been deleted successfully";
+};
