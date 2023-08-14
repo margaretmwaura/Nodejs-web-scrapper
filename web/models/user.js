@@ -55,6 +55,12 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     }
   );
+  User.associate = function (models) {
+    User.hasMany(models.Note, {
+      foreignKey: "UserId",
+      as: "notes",
+    });
+  };
 
   User.validPassword = async (password, hash) => {
     return await bcrypt.compareSync(password, hash);

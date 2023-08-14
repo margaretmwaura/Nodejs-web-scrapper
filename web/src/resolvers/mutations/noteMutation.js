@@ -4,12 +4,16 @@ const { Note } = require("../../../models");
 const { pubsub } = require("./../../pubSub");
 
 module.exports.createNote = async (_, { input }) => {
-  let { topic, content } = input;
+  let { topic, content, user_id } = input;
+
+  console.log("We are adding a note");
+  console.log(input);
 
   try {
     let newNote = await Note.create({
       topic: topic,
       content: content,
+      UserId: user_id,
     });
     pubsub.publish("NOTE_SUB", {
       noteSubcription: {

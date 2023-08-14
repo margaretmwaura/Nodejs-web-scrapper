@@ -2,10 +2,11 @@ const gql = require("graphql-tag");
 
 module.exports = gql`
   type User {
-    UserID: ID!
+    id: ID!
     first_name: String
     last_name: String
     email: EmailAddress
+    notes: [Note!]!
   }
 
   input RegisterUser {

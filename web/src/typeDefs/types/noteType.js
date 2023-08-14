@@ -6,11 +6,13 @@ module.exports = gql`
     topic: String
     content: String
     createdAt: String
+    user: User!
   }
 
   input CreateNote {
-    topic: String
-    content: String
+    topic: String!
+    content: String!
+    user_id: String!
   }
 
   input UpdateNote {

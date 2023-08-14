@@ -31,6 +31,7 @@ module.exports.registerUser = async (_, { input }, context) => {
       first_name: user.first_name,
       last_name: user.last_name,
       email: user.email,
+      id: user.id,
     };
 
     return {
