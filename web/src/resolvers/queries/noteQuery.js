@@ -6,7 +6,9 @@ module.exports.getNotes = async (_, { user_id }, context) => {
   try {
     const notes = await Note.findAll({
       where: {
-        [Op.or]: [{ UserId: user_id }],
+        UserId: {
+          [Op.eq]: user_id,
+        },
       },
     });
     return notes;

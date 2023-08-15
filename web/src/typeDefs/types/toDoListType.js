@@ -11,6 +11,7 @@ module.exports = gql`
   type TodoList {
     id: ID!
     todoListItems: [TodoListItem!]!
+    user: User!
   }
 
   type TodoListItem {
@@ -29,6 +30,7 @@ module.exports = gql`
   }
 
   input TodoListInput {
+    user_id: String!
     todoListItems: [ToDoListItemsInput]!
   }
 

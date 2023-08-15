@@ -12,6 +12,7 @@ const twilio = require("twilio")(sid, auth_token);
 // TODO: Associate the TODO with the logged in user
 module.exports.createToDoList = async (_, { input }) => {
   let items = input.todoListItems;
+  let user_id = input.user_id;
   for (let item of items) {
     let item_name = item.item_name;
     const key = item_name
@@ -24,6 +25,7 @@ module.exports.createToDoList = async (_, { input }) => {
   try {
     let todoList = await TodoList.create(
       {
+        UserId: user_id,
         todoListItems: items,
       },
       {

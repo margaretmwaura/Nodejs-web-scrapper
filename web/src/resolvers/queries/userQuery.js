@@ -42,7 +42,9 @@ module.exports.getUser = async (_, { email }, context) => {
   try {
     const user = await User.findOne({
       where: {
-        [Op.or]: [{ email: email }],
+        email: {
+          [Op.eq]: email,
+        },
       },
     });
     console.log(user);

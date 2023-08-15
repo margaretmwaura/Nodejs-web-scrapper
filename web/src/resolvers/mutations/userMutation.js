@@ -10,9 +10,13 @@ module.exports.registerUser = async (_, { input }, context) => {
   try {
     const userCheck = await User.findOne({
       where: {
-        [Op.or]: [{ email: email }],
+        email: {
+          [Op.eq]: email,
+        },
       },
     });
+    console.log("Checking gotten user");
+    console.log(userCheck);
     if (userCheck) {
       return {
         __typename: "CreateError",

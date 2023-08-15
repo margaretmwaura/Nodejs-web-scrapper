@@ -7,6 +7,7 @@ module.exports = gql`
     last_name: String
     email: EmailAddress
     notes: [Note!]!
+    todoLists: [TodoList!]!
   }
 
   input RegisterUser {

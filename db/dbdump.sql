@@ -25,7 +25,9 @@ CREATE TABLE todoLists ( id int(11) unsigned NOT NULL AUTO_INCREMENT,
 created_at timestamp NULL DEFAULT NULL, 
 deleted_at timestamp NULL DEFAULT NULL, 
 updated_at timestamp NULL DEFAULT NULL, 
-PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+user_id int(11) unsigned NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE todoListItems ( 

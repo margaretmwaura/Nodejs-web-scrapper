@@ -39,6 +39,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "TodoListId",
       as: "todoListItems",
     });
+    TodoList.belongsTo(models.User, {
+      foreignKey: "UserId",
+      as: "user",
+    });
   };
 
   return TodoList;

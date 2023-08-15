@@ -60,6 +60,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "UserId",
       as: "notes",
     });
+    User.hasMany(models.TodoList, {
+      foreignKey: "UserId",
+      as: "todoLists",
+    });
   };
 
   User.validPassword = async (password, hash) => {
