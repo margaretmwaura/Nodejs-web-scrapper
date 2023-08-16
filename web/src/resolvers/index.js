@@ -34,14 +34,21 @@ module.exports = {
             .local()
             .format("YYYY-MM-DD HH:mm");
 
-          return localTime >= TODAY_START && localTime <= TODAY_END;
+          return (
+            localTime >= TODAY_START &&
+            localTime <= TODAY_END &&
+            payload.todoCreated.UserId == variables.user_id
+          );
         }
       ),
     },
     noteSubcription: {
-      subscribe() {
-        return pubsub.asyncIterator("NOTE_SUB");
-      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator(["NOTE_SUB"]),
+        (payload, variables) => {
+          return payload.noteSubcription.data.UserId == variables.user_id;
+        }
+      ),
     },
   },
 

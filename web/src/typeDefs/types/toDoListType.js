@@ -48,6 +48,6 @@ module.exports = gql`
 
   input DeleteTodoListItem {
     id: ID!
-    item_name: String
+    key_name: String
   }
 `;
