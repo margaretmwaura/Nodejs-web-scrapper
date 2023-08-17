@@ -113,12 +113,25 @@ module.exports.deleteTodoListItem = async (_, { input }) => {
 
   let todo = todoListItem.todoList;
 
-  console.log("The todo");
-  console.log(todo);
-
   await TodoListItem.destroy({
     where: { id: id },
   });
+
+  console.log("The todo");
+  console.log(todo);
+
+  let todoListItems = await TodoListItem.findAll({
+    where: { TodoListId: todo.id },
+  });
+
+  console.log(todoListItems);
+
+  if (!todoListItems || todoListItems.length == 0) {
+    console.log("We have deleted");
+    await TodoList.destroy({
+      where: { id: todo.id },
+    });
+  }
 
   if (manager.exists(key_name)) {
     manager.deleteJob(key_name);
