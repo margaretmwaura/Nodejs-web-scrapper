@@ -1,9 +1,8 @@
-const bcrypt = require("bcrypt");
 const Sequelize = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  const TodoList = sequelize.define(
-    "TodoList",
+  const Note = sequelize.define(
+    "Note",
     {
       id: {
         autoIncrement: true,
@@ -11,6 +10,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
+      topic: { type: DataTypes.STRING, allowNull: false },
+      content: { type: DataTypes.STRING, allowNull: false },
       createdAt: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
@@ -29,21 +30,18 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "todoLists",
+      tableName: "notes",
       timestamps: true,
       underscored: true,
     }
   );
-  TodoList.associate = function (models) {
-    TodoList.hasMany(models.TodoListItem, {
-      foreignKey: "TodoListId",
-      as: "todoListItems",
-    });
-    TodoList.belongsTo(models.User, {
+
+  Note.associate = function (models) {
+    Note.belongsTo(models.User, {
       foreignKey: "UserId",
       as: "user",
     });
   };
 
-  return TodoList;
+  return Note;
 };

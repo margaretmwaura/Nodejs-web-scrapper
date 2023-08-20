@@ -5,7 +5,8 @@ module.exports = gql`
     getVowels: [Vowel]
     getUserList: [User]
     getUser(email: String!): User
-    getTodoList: [TodoList]
-    getTodaysToDoList: TodoList
+    getTodoList(user_id: String!): [TodoList]
+    getTodaysToDoList(user_id: String!): TodoList
+    getNotes(user_id: String!): [Note]
   }
 `;

@@ -11,6 +11,7 @@ module.exports = gql`
   type TodoList {
     id: ID!
     todoListItems: [TodoListItem!]!
+    user: User!
   }
 
   type TodoListItem {
@@ -29,6 +30,7 @@ module.exports = gql`
   }
 
   input TodoListInput {
+    user_id: String!
     todoListItems: [ToDoListItemsInput]!
   }
 
@@ -46,6 +48,6 @@ module.exports = gql`
 
   input DeleteTodoListItem {
     id: ID!
-    item_name: String
+    key_name: String
   }
 `;

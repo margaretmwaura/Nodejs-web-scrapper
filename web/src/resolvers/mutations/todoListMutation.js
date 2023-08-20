@@ -7,14 +7,12 @@ const CronJob = require("./../../../lib/cron.js").CronJob;
 const manager = require("./../../../crons");
 let sid = process.env.SID;
 let auth_token = process.env.AUTH_TOKEN;
-console.log("The twilio access details");
-console.log(sid);
-console.log(auth_token);
-// const twilio = require("twilio")("saklkkllksa", "ajjkkjjks");
+const twilio = require("twilio")(sid, auth_token);
 
 // TODO: Associate the TODO with the logged in user
 module.exports.createToDoList = async (_, { input }) => {
   let items = input.todoListItems;
+  let user_id = input.user_id;
   for (let item of items) {
     let item_name = item.item_name;
     const key = item_name
@@ -27,6 +25,7 @@ module.exports.createToDoList = async (_, { input }) => {
   try {
     let todoList = await TodoList.create(
       {
+        UserId: user_id,
         todoListItems: items,
       },
       {
@@ -79,9 +78,15 @@ module.exports.updateTodoListItem = async (_, { input }) => {
 
 module.exports.addTodoListItem = async (_, { input }) => {
   try {
+    const key = input.item_name
+      .split(" ")
+      .map((word) => word.charAt(0))
+      .join("")
+      .toUpperCase();
     await TodoListItem.create({
       item_name: input.item_name,
       TodoListId: input.id,
+      key_name: key,
     });
 
     let todo = await TodoList.findOne({
@@ -108,12 +113,25 @@ module.exports.deleteTodoListItem = async (_, { input }) => {
 
   let todo = todoListItem.todoList;
 
+  await TodoListItem.destroy({
+    where: { id: id },
+  });
+
   console.log("The todo");
   console.log(todo);
 
-  await TodoList.destroy({
-    where: { id: id },
+  let todoListItems = await TodoListItem.findAll({
+    where: { TodoListId: todo.id },
   });
+
+  console.log(todoListItems);
+
+  if (!todoListItems || todoListItems.length == 0) {
+    console.log("We have deleted");
+    await TodoList.destroy({
+      where: { id: todo.id },
+    });
+  }
 
   if (manager.exists(key_name)) {
     manager.deleteJob(key_name);
@@ -139,20 +157,20 @@ async function schedulingReminder(key, time) {
   console.log(time);
 
   if (time) {
-    manager.add(key, date, () => {
+    manager.add(key, time, () => {
       console.log("This is running for task " + key);
-      // twilio.messages
-      //   .create({
-      //     from: number,
-      //     to: "+254715420981",
-      //     body: "Girlllll we got work to do",
-      //   })
-      //   .then(() => {
-      //     console.log("We sent message");
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      twilio.messages
+        .create({
+          from: number,
+          to: "+254715420981",
+          body: "Girlllll we got work to do",
+        })
+        .then(() => {
+          console.log("We sent message");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
     manager.start(key);
   } else {
