@@ -4,10 +4,13 @@ networks:
     driver: bridge
 services:
   db:
-    build: ./db
+    build: 
+      context: ./db
+      args:
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     environment:
-      - MYSQL_ROOT_PASSWORD=Aswift07
-      - MYSQL_DATABASE=FRENCHDB
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
     ports: 
       - "3306:3306"
     restart: always
@@ -16,14 +19,14 @@ services:
   web:
     build: ./web
     environment:
-      - MYSQL_DATABASE=FRENCHDB
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=Aswift07
-      - MYSQL_HOST=db
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_HOST=${MYSQL_HOST}
       - JWT_SECRET=${JWT_SECRET}
       - PORT=${PORT}
       - SID=${SID}
       - AUTH_TOKEN=${AUTH_TOKEN}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
     ports:
       - "5000:5000"
     depends_on:

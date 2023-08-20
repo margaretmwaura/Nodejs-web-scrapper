@@ -55,8 +55,3 @@ updated_at timestamp NULL DEFAULT NULL,
 PRIMARY KEY (id),
 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-
--- FIXME: Read the password from config
-ALTER USER 'root' IDENTIFIED WITH mysql_root_password BY 'Aswift07';
-
-flush privileges;

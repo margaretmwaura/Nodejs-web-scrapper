@@ -2,16 +2,35 @@ const { sequelize } = require("sequelize");
 const { User } = require("../../../models");
 const { Op } = require("sequelize");
 const jsonwebtoken = require("jsonwebtoken");
+const CryptoJS = require("crypto-js");
+
+let encryption_key = process.env.ENCRYPTION_KEY;
 
 module.exports.registerUser = async (_, { input }, context) => {
   console.log("we have been called ayyeee");
   console.log(input);
   const { first_name, last_name, email, password } = input;
+
+  let de_first_name = CryptoJS.AES.decrypt(first_name, encryption_key).toString(
+    CryptoJS.enc.Utf8
+  );
+  let de_last_name = CryptoJS.AES.decrypt(last_name, encryption_key).toString(
+    CryptoJS.enc.Utf8
+  );
+  let de_email = CryptoJS.AES.decrypt(email, encryption_key).toString(
+    CryptoJS.enc.Utf8
+  );
+  let de_password = CryptoJS.AES.decrypt(password, encryption_key).toString(
+    CryptoJS.enc.Utf8
+  );
+
+  console.log(de_first_name, de_last_name, de_email, de_password);
+
   try {
     const userCheck = await User.findOne({
       where: {
         email: {
-          [Op.eq]: email,
+          [Op.eq]: de_email,
         },
       },
     });
@@ -24,10 +43,10 @@ module.exports.registerUser = async (_, { input }, context) => {
       };
     }
     const user = await User.create({
-      first_name,
-      last_name,
-      email,
-      password,
+      first_name: de_first_name,
+      last_name: de_last_name,
+      email: de_email,
+      password: de_password,
     });
 
     let createdUser = {
