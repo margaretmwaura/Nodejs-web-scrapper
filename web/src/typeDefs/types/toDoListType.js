@@ -50,4 +50,10 @@ module.exports = gql`
     id: ID!
     key_name: String
   }
+
+  input GetAWeekTodoList {
+    user_id: String!
+    start_date: String!
+    end_date: String!
+  }
 `;

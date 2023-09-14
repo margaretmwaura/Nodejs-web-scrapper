@@ -42,20 +42,13 @@ module.exports.getTodaysToDoList = async (_, { user_id }, context) => {
   }
 };
 
-module.exports.getThisWeeksToDoList = async (_, { user_id }, context) => {
-  const d = new Date();
+module.exports.getThisWeeksToDoList = async (_, { input }, context) => {
 
-  let last_date_of_the_week = d.setDate(d.getDate() - 0);
-  const END_TIME = moment(last_date_of_the_week).format("YYYY-MM-DD 23:59");
+  let { user_id, start_date, end_date } = input;
 
-  console.log("End time");
-  console.log(END_TIME);
+  const END_TIME = moment(end_date).format("YYYY-MM-DD 23:59");
 
-  let first_date_of_the_week = d.setDate(d.getDate() - 6);
-  const START_TIME = moment(first_date_of_the_week).format("YYYY-MM-DD 00:00");
-
-  console.log("Start time");
-  console.log(START_TIME);
+  const START_TIME = moment(start_date).format("YYYY-MM-DD 00:00");
 
   try {
     const todoLists = await TodoList.findAll({

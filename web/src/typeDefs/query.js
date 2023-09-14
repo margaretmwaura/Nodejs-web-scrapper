@@ -8,6 +8,6 @@ module.exports = gql`
     getTodoList(user_id: String!): [TodoList]
     getTodaysToDoList(user_id: String!): TodoList
     getNotes(user_id: String!): [Note]
-    getThisWeeksToDoList(user_id: String!): [TodoList]
+    getThisWeeksToDoList(input: GetAWeekTodoList!): [TodoList]
   }
 `;
