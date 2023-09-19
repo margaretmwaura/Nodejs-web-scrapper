@@ -13,6 +13,8 @@ const twilio = require("twilio")(sid, auth_token);
 module.exports.createToDoList = async (_, { input }) => {
   let items = input.todoListItems;
   let user_id = input.user_id;
+  let reminder_time = new Date().toISOString();
+
   for (let item of items) {
     let item_name = item.item_name;
     const key = item_name
@@ -21,6 +23,11 @@ module.exports.createToDoList = async (_, { input }) => {
       .join("")
       .toUpperCase();
     item.key_name = key;
+
+    item.reminder = reminder_time;
+    reminder_time = new Date(
+      new Date(reminder_time).getTime() + 30 * 60000
+    ).toISOString();
   }
   try {
     let todoList = await TodoList.create(
@@ -52,6 +59,7 @@ module.exports.updateTodoListItem = async (_, { input }) => {
 
   delete input.id;
 
+  console.log(input);
   try {
     await TodoListItem.update(input, {
       where: { id: item_id },
@@ -62,7 +70,8 @@ module.exports.updateTodoListItem = async (_, { input }) => {
       include: "todoList",
     });
 
-    await schedulingReminder(todoListItem.key_name, input.reminder);
+    // TODO: We have been teesting a lot , will return after the numerous testing
+    // await schedulingReminder(todoListItem.key_name, input.reminder);
 
     let todo = todoListItem.todoList;
 
@@ -149,16 +158,11 @@ module.exports.deleteTodoListItem = async (_, { input }) => {
 
 async function schedulingReminder(key, time) {
   let number = "+12345401823";
-  console.log("Before time instantiation" + time);
   let date = new Date();
   date.setSeconds(date.getSeconds() + 2);
-  console.log("After time instantiation");
-  console.log(date);
-  console.log(time);
 
   if (time) {
     manager.add(key, time, () => {
-      console.log("This is running for task " + key);
       twilio.messages
         .create({
           from: number,
