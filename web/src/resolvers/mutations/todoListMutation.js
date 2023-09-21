@@ -59,7 +59,6 @@ module.exports.updateTodoListItem = async (_, { input }) => {
 
   delete input.id;
 
-  console.log(input);
   try {
     await TodoListItem.update(input, {
       where: { id: item_id },
