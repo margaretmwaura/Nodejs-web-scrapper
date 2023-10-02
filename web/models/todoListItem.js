@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
       key_name: { type: DataTypes.STRING, allowNull: false },
       reminder: {
         type: DataTypes.DATE,
-        allowNull: true,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
       },
       status_name: {
         type: Sequelize.ENUM("not-started", "in-progress", "closed"),
