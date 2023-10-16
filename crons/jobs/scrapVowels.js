@@ -51,6 +51,9 @@ async function getAllData() {
     .then((body) => (root = parse(body)))
     .then(async () => {
       await extractData(root);
+    })
+    .catch((error) => {
+      console.log(error);
     });
   // console.log("items all: ");
 }
@@ -80,10 +83,17 @@ async function getAudio(root) {
       },
     });
     const outputFilename = `${dir}/${audio.split("/")[6]}`;
-    fs.writeFileSync(outputFilename, data);
-    // No space within names
-    await uploadFile(outputFilename, audio.split("/")[6]);
-    let url = await generateSignedUrl(audio.split("/")[6]);
+    let url = "";
+    try {
+      fs.writeFileSync(outputFilename, data);
+      // No space within names
+      await uploadFile(outputFilename, audio.split("/")[6]);
+      url = await generateSignedUrl(audio.split("/")[6]);
+    } catch (error) {
+      console.log("There was an error when trying to get the audio file");
+      console.log(error.message);
+    }
+
     signedUrls[i] = url;
     i++;
   }

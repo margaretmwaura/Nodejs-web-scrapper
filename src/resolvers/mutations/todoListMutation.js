@@ -1,5 +1,6 @@
-require("dotenv").config({ path: require("find-config")(".env") });
-
+// require("dotenv").config({ path: require("find-config")(".env") });
+const path = require("path");
+require("dotenv").config({ path: path.resolve("./.env") });
 const Sequelize = require("sequelize");
 const { TodoList, TodoListItem } = require("../../../models");
 const { pubsub } = require("./../../pubSub");
