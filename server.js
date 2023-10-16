@@ -78,6 +78,7 @@ async function startApolloServer(schemaWithMiddleware, httpServer, app) {
 
   // Now that our HTTP server is fully set up, we can listen to it.
   console.log(process.env.JWT_SECRET);
+  console.log(process.env.ENCRYPTION_KEY);
   const PORT = process.env.PORT;
   console.log(PORT);
   await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));

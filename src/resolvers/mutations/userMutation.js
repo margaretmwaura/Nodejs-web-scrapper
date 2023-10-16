@@ -1,3 +1,6 @@
+const path = require("path");
+require("dotenv").config({ path: path.resolve("./.env") });
+// require("dotenv").config({ path: require("find-config")(".env") });
 const { sequelize } = require("sequelize");
 const { User } = require("../../../models");
 const { Op } = require("sequelize");
@@ -9,6 +12,8 @@ let encryption_key = process.env.ENCRYPTION_KEY;
 module.exports.registerUser = async (_, { input }, context) => {
   console.log("we have been called ayyeee");
   console.log(input);
+  console.log("Encryption key " + encryption_key);
+
   const { first_name, last_name, email, password } = input;
 
   let de_first_name = CryptoJS.AES.decrypt(first_name, encryption_key).toString(
