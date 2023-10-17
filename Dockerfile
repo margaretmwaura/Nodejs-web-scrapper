@@ -3,6 +3,8 @@ FROM node:16
 # This is important for setting the time zone
 ARG DB_CONFIG_FILE
 
+RUN echo $DB_CONFIG_FILE
+
 ENV TZ=Africa/Nairobi
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
