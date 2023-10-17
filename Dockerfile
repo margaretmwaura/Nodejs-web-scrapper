@@ -16,7 +16,7 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package.json ./
 
-COPY $DB_CONFIG_FILE ./config/
+COPY $DB_CONFIG_FILE ./
 
 RUN npm install
 
