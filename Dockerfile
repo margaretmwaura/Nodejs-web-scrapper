@@ -18,7 +18,7 @@ RUN echo $SEQ_FILE
 
 COPY package.json ./
 
-COPY $SEQ_FILE ./
+COPY $SEQ_FILE ./config/
 
 RUN npm install
 
