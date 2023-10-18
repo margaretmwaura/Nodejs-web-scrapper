@@ -1,8 +1,10 @@
 FROM node:16
 
-ARG db_arg
+ARG db_file_arg
+ARG fb_file_arg
+ARG env_file_arg
 
-RUN echo ${db_arg}
+RUN echo ${db_file_arg}
 # This is important for setting the time zone
 ENV TZ=Africa/Nairobi
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -17,7 +19,11 @@ WORKDIR /usr/src/app
 # COPY package.json ./
 COPY . .
 
-RUN echo $db_arg > /usr/src/app/config/config.json
+RUN echo $db_file_arg > /usr/src/app/config/config.json
+
+RUN echo $fb_file_arg > /usr/src/app/config/fbServiceAccountKey.json
+
+RUN echo $env_file_arg > /.env
 
 RUN npm install
 
