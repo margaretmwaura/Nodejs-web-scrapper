@@ -1,9 +1,9 @@
-
+pipeline {
+  agent any
+  
   stages {
     stage('Build') {
       steps {
-          // sh 'docker build -t french-backend -f Dockerfile .'
-          // sh 'docker tag french-backend $DOCKER_FRENCH_BACK_END_IMAGE'
           withCredentials([file(credentialsId: 'db_config_file', variable: 'DB_CONFIG_FILE'), file(credentialsId: 'fb_service_account_file', variable: 'FB_SERVICE_ACCOUNT_FILE'), file(credentialsId: 'backend_env', variable: 'BACKEND_ENV')]) {
             script {
               def secretContents = readFile(env.DB_CONFIG_FILE).trim()
@@ -11,7 +11,6 @@
               sh "docker build --build-arg db_arg='${secretContents}' -t french-backend -f Dockerfile ."
               sh 'docker tag french-backend $DOCKER_FRENCH_BACK_END_IMAGE'
             }
-            // sh "docker run -d -v \$DB_CONFIG_FILE:/usr/src/app/config/config.json -v \$FB_SERVICE_ACCOUNT_FILE:/usr/src/app/config/fbServiceAccountKey.json  -v \$BACKEND_ENV:/usr/src/app/.env --network=french-network --name=french-backend -p 5000:5000 \$DOCKER_FRENCH_BACK_END_IMAGE"
         }
       }
     }
