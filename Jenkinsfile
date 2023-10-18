@@ -6,9 +6,10 @@ pipeline {
       steps {
           withCredentials([file(credentialsId: 'db_config_file', variable: 'DB_CONFIG_FILE'), file(credentialsId: 'fb_service_account_file', variable: 'FB_SERVICE_ACCOUNT_FILE'), file(credentialsId: 'backend_env', variable: 'BACKEND_ENV')]) {
             script {
-              def secretContents = readFile(env.DB_CONFIG_FILE).trim()
-              echo "The results of reading are ${secretContents}"
-              sh "docker build --build-arg db_arg='${secretContents}' -t french-backend -f Dockerfile ."
+              def dbFileContents = readFile(env.DB_CONFIG_FILE).trim()
+              def fbFileContents = readFile(env.FB_SERVICE_ACCOUNT_FILE).trim()
+              def envFileContents = readFile(env.backend_env).trim()
+              sh "docker build --build-arg db_file_arg='${dbFileContents}' --build-arg fb_file_arg='${fbFileContents}' --build-arg env_file_arg='${envFileContents}' -t french-backend -f Dockerfile ."
               sh 'docker tag french-backend $DOCKER_FRENCH_BACK_END_IMAGE'
             }
         }
