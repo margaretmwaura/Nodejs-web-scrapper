@@ -1,5 +1,8 @@
 FROM node:16
 
+ARG db_arg
+
+RUN echo ${db_arg}
 # This is important for setting the time zone
 ENV TZ=Africa/Nairobi
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -11,11 +14,10 @@ WORKDIR /usr/src/app
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 
-ARG SEQ_FILE=$DB_CONFIG_FILE
+# COPY package.json ./
+COPY . .
 
-RUN echo $SEQ_FILE
-
-COPY package.json ./
+RUN echo $db_arg > /usr/src/app/config/config.json
 
 RUN npm install
 
@@ -25,7 +27,6 @@ RUN npm install graphql-iso-date --force
 # RUN npm ci --only=production
 
 # Bundle app source
-COPY . .
 
 EXPOSE 5000
 CMD [ "node", "server.js" ]
