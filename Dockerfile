@@ -23,7 +23,7 @@ RUN echo $db_file_arg > ./config/config.json
 
 RUN echo $fb_file_arg > ./config/fbServiceAccountKey.json
 
-RUN echo $env_file_arg > ./.env
+RUN echo $env_file_arg > /usr/src/app/.env
 
 RUN npm install
 
