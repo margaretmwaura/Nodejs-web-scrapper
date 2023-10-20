@@ -8,7 +8,7 @@ const CronJob = require("./../../../lib/cron.js").CronJob;
 const manager = require("./../../../crons");
 let sid = process.env.SID;
 let auth_token = process.env.AUTH_TOKEN;
-const twilio = require("twilio")(sid, auth_token);
+// const twilio = require("twilio")(sid, auth_token);
 
 // TODO: Associate the TODO with the logged in user
 module.exports.createToDoList = async (_, { input }) => {
