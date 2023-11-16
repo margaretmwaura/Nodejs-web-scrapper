@@ -14,7 +14,7 @@ module.exports.registerUser = async (_, { input }, context) => {
   console.log(input);
   console.log("Encryption key " + encryption_key);
 
-  const { first_name, last_name, email, password } = input;
+  const { first_name, last_name, email } = input;
 
   let de_first_name = CryptoJS.AES.decrypt(first_name, encryption_key).toString(
     CryptoJS.enc.Utf8
@@ -25,11 +25,6 @@ module.exports.registerUser = async (_, { input }, context) => {
   let de_email = CryptoJS.AES.decrypt(email, encryption_key).toString(
     CryptoJS.enc.Utf8
   );
-  let de_password = CryptoJS.AES.decrypt(password, encryption_key).toString(
-    CryptoJS.enc.Utf8
-  );
-
-  console.log(de_first_name, de_last_name, de_email, de_password);
 
   try {
     const userCheck = await User.findOne({
@@ -51,7 +46,6 @@ module.exports.registerUser = async (_, { input }, context) => {
       first_name: de_first_name,
       last_name: de_last_name,
       email: de_email,
-      password: de_password,
     });
 
     let createdUser = {
@@ -66,31 +60,6 @@ module.exports.registerUser = async (_, { input }, context) => {
       __typename: "RegisterSuccessful",
       user: createdUser,
     };
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-module.exports.login = async (_, { input }, context) => {
-  const { email, password } = input;
-  try {
-    const user = await User.findOne({ where: { email } });
-
-    if (!user) {
-      throw new Error("No user with that email");
-    }
-    const isValid = await User.validPassword(password, user.password);
-
-    if (!isValid) {
-      throw new Error("Kindly check your credentials and retry");
-    }
-
-    const token = jsonwebtoken.sign(
-      { userId: user.id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
-
-    return token;
   } catch (error) {
     throw new Error(error.message);
   }

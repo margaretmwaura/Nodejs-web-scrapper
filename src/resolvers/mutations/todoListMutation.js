@@ -92,7 +92,8 @@ module.exports.addTodoListItem = async (_, { input }) => {
       .map((word) => word.charAt(0))
       .join("")
       .toUpperCase();
-    await TodoListItem.create({
+
+    let result = await TodoListItem.create({
       item_name: input.item_name,
       TodoListId: input.id,
       key_name: key,

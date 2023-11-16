@@ -14,12 +14,6 @@ module.exports = gql`
     first_name: String!
     last_name: String!
     email: EmailAddress!
-    password: String!
-  }
-
-  input LoginUser {
-    email: EmailAddress!
-    password: String!
   }
 
   type RegisterSuccessful {
