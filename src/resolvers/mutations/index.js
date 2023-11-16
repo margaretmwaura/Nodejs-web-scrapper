@@ -1,5 +1,5 @@
 const { createVowel, deleteVowels } = require("./vowelMutation");
-const { registerUser, login } = require("./userMutation");
+const { registerUser } = require("./userMutation");
 const { checkAuth } = require("./authMutation");
 const {
   createToDoList,
@@ -12,7 +12,6 @@ module.exports.Mutation = {
   createVowel,
   deleteVowels,
   registerUser,
-  login,
   checkAuth,
   createToDoList,
   updateTodoListItem,
