@@ -8,7 +8,7 @@ use to better their french.
 
 ## Technologies Used
 
-The project is built on Nodejs, Sequelize , Apollo Server and GraphQL.
+The project is built on Nodejs, Sequelize , Apollo Server, GraphQL and docker.
 
 ## Getting Started
 
