@@ -4,7 +4,6 @@ ARG db_file_arg
 ARG fb_file_arg
 ARG env_file_arg
 
-RUN echo ${db_file_arg}
 # This is important for setting the time zone
 ENV TZ=Africa/Nairobi
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

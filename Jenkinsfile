@@ -28,14 +28,6 @@ pipeline {
         }
       }
     }
-
-    stage('Run'){
-      steps {
-        withCredentials([file(credentialsId: 'db_config_file', variable: 'DB_CONFIG_FILE'), file(credentialsId: 'fb_service_account_file', variable: 'FB_SERVICE_ACCOUNT_FILE'), file(credentialsId: 'backend_env', variable: 'BACKEND_ENV')]) {
-          sh "docker run --network=french-network --name=french-backend -p 5000:5000 \$DOCKER_FRENCH_BACK_END_IMAGE"
-        }
-      }
-    }
   }
   post {
     always {
