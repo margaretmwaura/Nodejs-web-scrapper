@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
       first_name: { type: DataTypes.STRING, allowNull: true },
       last_name: { type: DataTypes.STRING, allowNull: true },
       email: { type: DataTypes.STRING, allowNull: false, unique: true },
-      password: { type: DataTypes.STRING, allowNull: false },
       createdAt: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
@@ -34,23 +33,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       tableName: "users",
-      hooks: {
-        beforeCreate: async (user) => {
-          if (user.password) {
-            const salt = await bcrypt.genSaltSync(10, "a");
-            user.password = bcrypt.hashSync(user.password, salt);
-          }
-        },
-        beforeUpdate: async (user) => {
-          if (user.password) {
-            const salt = await bcrypt.genSaltSync(10, "a");
-            user.password = bcrypt.hashSync(user.password, salt);
-          }
-        },
-      },
-      defaultScope: {
-        rawAttributes: { exclude: ["password"] },
-      },
       timestamps: true,
       underscored: true,
     }
@@ -64,10 +46,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "UserId",
       as: "todoLists",
     });
-  };
-
-  User.validPassword = async (password, hash) => {
-    return await bcrypt.compareSync(password, hash);
   };
   return User;
 };

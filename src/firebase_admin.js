@@ -1,6 +1,13 @@
 const admin = require("firebase-admin");
-
-const serviceAccount = require("./../config/fbServiceAccountKey.json");
+const fs = require("fs");
+const path = require("path");
+const serviceAccount = JSON.parse(
+  fs.readFileSync(
+    path.resolve(__dirname, "../config/fbServiceAccountKey.json"),
+    "utf8"
+  )
+);
+// const serviceAccount = require("../config/fbServiceAccountKey.json");
 
 let firebaseAdmin = admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

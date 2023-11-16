@@ -24,6 +24,7 @@ module.exports = {
       subscribe: withFilter(
         () => pubsub.asyncIterator(["TODO_CREATED"]),
         (payload, variables) => {
+          console.log("Within the subscription");
           const TODAY_START = moment().format("YYYY-MM-DD 00:00");
           const TODAY_END = moment().format("YYYY-MM-DD 23:59");
 
