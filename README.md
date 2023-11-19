@@ -15,9 +15,15 @@ The project is built on Nodejs, Sequelize , Apollo Server, GraphQL and docker.
 ### Requirements
 - Ensure you have docker installed on your local machine
 - Fill the .env with the relevant data based on the variables in the .env.example
+
+ ``` cp .env.example .env ```
+ 
 - Fill the config.json in the config folder with the sequelize config data
   Remember the env variables used in the setting up of the db container are needed in the setting up of the sequelize config file
+  Go through this article to understand how to setup the config.json https://dev.to/nedsoft/build-api-with-graphql-node-js-and-sequelize-5e8e
 - Get a firebase config file and use in the config folder in the fbServiceAccountKey.json file
+  Follow this guide to learn how to setup firebase sdk for your project
+  https://firebase.google.com/docs/admin/setup#initialize_the_sdk_in_non-google_environments
 
 ### Setting Up
 
